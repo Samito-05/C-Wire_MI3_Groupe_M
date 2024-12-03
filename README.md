@@ -9,6 +9,9 @@ Semaine du 24/11 :
 
 Semaine du 01/12 :
     - Début shell
-    -
+        - Fonction aide -
+        - Verif paramètres
+        - Compilation + verif
+        - Dossiers tmp & graphs
     -
     
