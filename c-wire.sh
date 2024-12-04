@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Help function
 function help {
     echo "Data file location : Input\c-wire_v00.dat"
@@ -15,11 +16,13 @@ if [[ "$1" == "-h" || $# -lt 3 ]]; then
     help
 fi
 
+
 # Parameters 
 data=$(realpath "$1")
 station_type=$2
 consumer_type=$3
 id=$4
+
 
 # Parameters check
 if [[ ! -f "$data" ]]; then
@@ -44,9 +47,30 @@ if { [[ "$station_type" == "hvb" && "$consumer_type" == "indiv" ]] ||
     help
 fi
 
-while IFS=';' read -r col1 col2 col3 col4 col5 col6 col7 col8; do
-    echo "${col1}:${col2}:${col3}:${col4}:${col5}:${col6}:${col7}:${col8}"
-done < "$data"
+
+# Define column indices based on the input
+if [[ "$station_type" == "hvb" ]]; then
+    column1=2
+elif [[ "$station_type" == "hva" ]]; then
+    column1=3
+elif [[ "$station_type" == "lv" ]]; then
+    column1=4
+fi
+
+if [[ "$consumer_type" == "comp" ]]; then
+    column2=5
+elif [[ "$consumer_type" == "indiv" ]]; then
+    column2=6
+fi
+
+
+# Parameter to exclude
+parameter="-"
+
+
+# Extract wanted lines
+awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
+    'NR > 1 && $col1 && $col2 && $col1 != param && $col2 != param' "$data"
 
 
 # Compilation of code
