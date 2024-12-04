@@ -13,5 +13,8 @@ Semaine du 01/12 :
         - Verif paramètres
         - Compilation + verif
         - Dossiers tmp & graphs
-    -
-    
+    - Début C
+        - Fonctions de base
+        - Structure
+        - 
+    - Gestion du documents via Shell    
