@@ -16,7 +16,7 @@ if [[ "$1" == "-h" || $# -lt 3 ]]; then
 fi
 
 # Parameters 
-data=$1
+data=$(realpath "$1")
 station_type=$2
 consumer_type=$3
 id=$4
@@ -43,6 +43,11 @@ if { [[ "$station_type" == "hvb" && "$consumer_type" == "indiv" ]] ||
     echo "Error: Invalid consumer and station combination."
     help
 fi
+
+while IFS=';' read -r col1 col2 col3 col4 col5 col6 col7 col8; do
+    echo "${col1}:${col2}:${col3}:${col4}:${col5}:${col6}:${col7}:${col8}"
+done < "$data"
+
 
 # Compilation of code
 EXE="./codeC/c-wire"
