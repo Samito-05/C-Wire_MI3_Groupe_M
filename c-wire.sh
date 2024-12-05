@@ -6,7 +6,7 @@ function help {
     echo "Data file location : Input/c-wire_v00.dat"
     echo "Station type : hvb, hva, lv"
     echo "Consumer type : comp, indiv, all (hvb all; hvb indiv; hva all; hva indiv forbidden)"
-    echo "ID"
+    echo "ID : Optionnal"
     echo "Help function : -h"
     echo "Order of implementation : file_location station_type consumer_type ID"
     exit 0
@@ -23,6 +23,7 @@ station_type=$2
 consumer_type=$3
 id=$4
 
+echo "$id"
 
 # Parameters check
 if [[ ! -f "$data" ]]; then
@@ -64,8 +65,13 @@ elif [[ "$consumer_type" == "indiv" ]]; then
 fi
 
 
-# Parameter to exclude
+# Parameter to 
+
 parameter="-"
+
+# ID to include
+
+parameter2=$id
 
 # Output CSV file
 output=$(realpath tmp/data_sorted.csv)
