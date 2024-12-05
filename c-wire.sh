@@ -3,14 +3,22 @@
 
 # Help function
 function help {
+    echo "==================================================================================="
+    echo ""
     echo "Data file location : Input/c-wire_v00.dat"
-    echo "Station type : hvb, hva, lv"
-    echo "Consumer type : comp, indiv, all (hvb all; hvb indiv; hva all; hva indiv forbidden)"
-    echo "ID : Optionnal"
+    echo "Station type possibilities : hvb, hva, lv"
+    echo "Consumer type possibilities : comp, indiv, all (hvb all; hvb indiv; hva all; hva indiv forbidden)"
+    echo "ID : Optional"
     echo "Help function : -h"
-    echo "Order of implementation : file_location station_type consumer_type ID"
+    echo "Order of implementation : file_location station_type consumer_type ID(optional)"
+    echo ""
+    echo "==================================================================================="
     exit 0
 }
+if [[ "$1" == "-h" || $# -lt 3 ]]; then
+    help
+fi
+
 
 # Default ID function
 function set_default_id {
