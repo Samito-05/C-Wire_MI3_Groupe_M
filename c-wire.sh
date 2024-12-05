@@ -12,18 +12,33 @@ function help {
     exit 0
 }
 
-if [[ "$1" == "-h" || $# -lt 3 ]]; then
-    help
-fi
+# Default ID function
+function set_default_id {
+    if [[ -z "$1" ]]; then
+        echo "0"
+    else
+        echo "$1"
+    fi
+}
 
+
+# Validate ID function
+function validate_id {
+    if [[ "$1" =~ ^[0-9]+$ ]]; then
+        echo "$1"
+    else
+        echo "Error: ID must be a numeric value."
+        exit 1
+    fi
+}
 
 # Parameters 
 data=$(realpath "$1")
 station_type=$2
 consumer_type=$3
-id=$4
+id=$(set_default_id "$4")
+id=$(validate_id "$id")
 
-echo "$id"
 
 # Parameters check
 if [[ ! -f "$data" ]]; then
@@ -65,7 +80,7 @@ elif [[ "$consumer_type" == "indiv" ]]; then
 fi
 
 
-# Parameter to 
+# Parameter to exlude
 
 parameter="-"
 
@@ -76,12 +91,22 @@ parameter2=$id
 # Output CSV file
 output=$(realpath tmp/data_sorted.csv)
 
+if [[  "$id" == "0" ]]; then
 
-# Extract wanted lines
-awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
+    # Extract wanted lines
+    awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
+        'NR == 1 {print; next} # Print header
+        NR > 1 && $col1 && $col2 && $col1 != param && $col2 != param {print}' \
+        "$data" > "$output"
+
+elif [[ "$id" -gt 0 ]]; then
+
+   awk -F';' -v col1="$column1" -v col2="$column2" -v col_id=1 -v param="$parameter" -v param2="$id" \
     'NR == 1 {print; next} # Print header
-     NR > 1 && $col1 && $col2 && $col1 != param && $col2 != param {print}' \
+     NR > 1 && $col1 && $col2 && $col_id == param2 && $col1 != param && $col2 != param {print}' \
     "$data" > "$output"
+fi
+
 
 
 # Compilation of code
