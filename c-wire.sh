@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# tmp & graphs folder setup
+mkdir -p tmp
+mkdir -p graphs
+
 
 # Help function
 function help {
@@ -130,7 +134,4 @@ if [[ ! -x "$EXE" ]]; then
 fi
 
 
-# tmp & graphs folder setup
-mkdir -p tmp
-mkdir -p graphs
 rm -rf tmp
