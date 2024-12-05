@@ -3,7 +3,7 @@
 
 # Help function
 function help {
-    echo "Data file location : Input\c-wire_v00.dat"
+    echo "Data file location : Input/c-wire_v00.dat"
     echo "Station type : hvb, hva, lv"
     echo "Consumer type : comp, indiv, all (hvb all; hvb indiv; hva all; hva indiv forbidden)"
     echo "ID"
@@ -67,10 +67,15 @@ fi
 # Parameter to exclude
 parameter="-"
 
+# Output CSV file
+output=$(realpath tmp/data_sorted.csv)
+
 
 # Extract wanted lines
 awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
-    'NR > 1 && $col1 && $col2 && $col1 != param && $col2 != param' "$data"
+    'NR == 1 {print; next} # Print header
+     NR > 1 && $col1 && $col2 && $col1 != param && $col2 != param {print}' \
+    "$data" > "$output"
 
 
 # Compilation of code
@@ -84,6 +89,7 @@ if [[ ! -x "$EXE" ]]; then
         exit 1
     fi
 fi
+
 
 # tmp & graphs folder setup
 mkdir -p tmp
