@@ -125,8 +125,3 @@ pStation insert(pStation stat, int e) {
   }
   return equilibrage(a);
 }
-
-int main(){
-  
-}
-
