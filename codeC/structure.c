@@ -6,18 +6,26 @@ typedef struct Station {
   long consumption;
   int id;
   int balance;
-  struct station* left;
-  struct station* right;
 } Station;
 
-typedef Station *pStation;
-
 typedef struct AVLtree {
-  Station root;
+  Station* station;
+  struct station* left;
+  struct station* right;
 } AVLtree;
 
+typedef AVLtree* pTree;
+
+// Fonction pour créer une nouvelle station
+pTree creerStation(long capacity_, long consumption_, int id_) {
+  pTree newStation = (pTree)malloc(sizeof(AVLtree)); // Allocation mémoire pour un nouveau nœud de type AVLtree
+  if (newStation == NULL) {
+    printf("Erreur d'allocation mémoire pour la station\n");
+    exit(1);
+  }
+
 pStation createstation(long capacity_, long consumption_, int id_) {
-  pStation stat = malloc(sizeof(Station));
+  pStation stat = malloc(sizeof(AVLtree));
   if (stat == NULL) {
     exit(1);
   }
@@ -110,18 +118,17 @@ pStation equilibrage(pStation station){
   return station;
 }
 
-
-pStation insert(pStation stat, int e) {
+pStation insert(pStation stat, long capacity, long consumption, int id) {
   if (stat == NULL) {
-    return createstation(stat);
-  } else if (stat->value>e){
-    stat->left= insert(stat->left);
+    return createstation(capacity, consumption, id);
+  } else if (consumption < stat->consumption){
+    stat->left = insert(stat->left, capacity, consumption, id);
   }
-  else if(stat->value<e){
-    stat->right = insert(stat->right);
+  else if(consumption > stat->consumption){
+    stat->right = insert(stat->right, capacity, consumption, id);
   }
   else{
-    return a;
+    return stat;
   }
-  return equilibrage(a);
+  return equilibrage(stat);
 }
