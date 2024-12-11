@@ -1,9 +1,11 @@
 #!/bin/bash
 
 # tmp & graphs folder setup
+rm -rf tmp
 mkdir -p tmp
 mkdir -p graphs
 
+start_time=$(date +%s.%N)
 
 # Help function
 function help {
@@ -119,7 +121,10 @@ elif [[ "$id" -gt 0 ]]; then
     "$data" > "$output"
 fi
 
+end_time=$(date +%s.%N)
+execution_time=$(awk "BEGIN {print $end_time - $start_time}")
 
+echo "The file has been sorted in ${execution_time} seconds"
 
 # Compilation of code
 EXE="./codeC/c-wire"
