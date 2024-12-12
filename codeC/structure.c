@@ -10,22 +10,15 @@ typedef struct Station {
 
 typedef struct AVLtree {
   Station* station;
-  struct station* left;
-  struct station* right;
+  struct AVLtree* left;  
+  struct AVLtree* right; 
 } AVLtree;
 
+typedef Station* pStation;
 typedef AVLtree* pTree;
 
-// Fonction pour créer une nouvelle station
-pTree creerStation(long capacity_, long consumption_, int id_) {
-  pTree newStation = (pTree)malloc(sizeof(AVLtree)); // Allocation mémoire pour un nouveau nœud de type AVLtree
-  if (newStation == NULL) {
-    printf("Erreur d'allocation mémoire pour la station\n");
-    exit(1);
-  }
-
 pStation createstation(long capacity_, long consumption_, int id_) {
-  pStation stat = malloc(sizeof(AVLtree));
+  pStation stat = malloc(sizeof(Station)); 
   if (stat == NULL) {
     exit(1);
   }
@@ -34,101 +27,118 @@ pStation createstation(long capacity_, long consumption_, int id_) {
   stat->consumption = consumption_;
   stat->id = id_;
   stat->balance = 0;
-  stat->left = NULL;
-  stat->right = NULL;
 
   return stat;
 }
 
-int hauteur(pStation a) {
+pTree createTree(pStation station) {
+  pTree treeNode = malloc(sizeof(AVLtree));
+  if (treeNode == NULL) {
+    exit(1);
+  }
+
+  treeNode->station = station;
+  treeNode->left = NULL; 
+  treeNode->right = NULL;
+
+  return treeNode;
+}
+
+int height(pTree node) {
   int hmax;
-  if (a == NULL) {
+  if (node == NULL) {
     hmax = 0;
     return hmax;
   }
 
-  int hgauche = hauteur(a->left);
-  int hdroit = hauteur(a->right);
+  int hleft = height(node->left);
+  int hright = height(node->right);
   
-  if (hgauche > hdroit){
-    hmax = hgauche;
+  if (hleft > hright){
+    hmax = hleft;
   } else{
-    hmax = hdroit;
+    hmax = hright;
   }
   
   return hmax;
 }
 
-void miseajourequilibre(pStation station) {
-  if (station != NULL) {
-    station->balance = hauteur(station->right) - hauteur(station->left);
+void change_balance(pTree node) {
+  if (node != NULL) {
+    node->station->balance = height(node->right) - height(node->left);
   }
 }
 
-pStation rotationLeft(pStation a) {
-  pStation b = a->right;
-  pStation c = b->left;
-  a->right = c;
-  b->left = a;
-  miseajourequilibre(a);
-  miseajourequilibre(b);
-  return b;
+pTree rotationLeft(pTree node) {
+  pTree rightChild = node->right;
+  pTree leftSubtree = rightChild->left;
+
+  rightChild->left = node;
+  node->right = leftSubtree;
+
+  change_balance(node);
+  change_balance(rightChild);
+
+  return rightChild;
 }
 
-pStation rotationRight(pStation a) {
-  pStation b = a->left;
-  pStation c = b->right;
+pTree rotationRight(pTree node) {
+  pTree leftChild = node->left;
+  pTree rightSubtree = leftChild->right;
 
-  a->left = c;
-  b->right = a;
+  leftChild->right = node;
+  node->left = rightSubtree;
 
-  miseajourequilibre(a);
-  miseajourequilibre(b);
+  change_balance(node);
+  change_balance(leftChild);
 
-  return b;
+  return leftChild;
 }
 
-pStation doubleRotationLeft(pStation station) {
-  station->right = rotationRight(station->right);
-  return rotationLeft(station);
+pTree doubleRotationLeft(pTree node) {
+  node->right = rotationRight(node->right);
+  return rotationLeft(node);
 }
 
-pStation doubleRotationRight(pStation station) {
-  station->left = rotationLeft(station->left);
-  return rotationRight(station);
+pTree doubleRotationRight(pTree node) {
+  node->left = rotationLeft(node->left);
+  return rotationRight(node);
 }
 
-pStation equilibrage(pStation station){
-  if (station->balance >= 2){
-    if(station->right >= 0){
-      return rotationLeft(station);
-    } else{
-      return doubleRotationLeft(station);
+pTree equilibrage(pTree node) {
+  change_balance(node);
+
+  if (node->station->balance >= 2) {
+    if (node->right->station->balance >= 0) {
+      return rotationLeft(node);
+    } else {
+      return doubleRotationLeft(node);
     }
   }
-  
-  if(station->balance <= -2){
-    if(station->left <= 0){
-      return rotationRight(station);
-    } else{
-      return doubleRotationRight(station);
+
+  if (node->station->balance <= -2) {
+    if (node->left->station->balance <= 0) {
+      return rotationRight(node);
+    } else {
+      return doubleRotationRight(node);
     }
   }
-  
-  return station;
+
+  return node;
 }
 
-pStation insert(pStation stat, long capacity, long consumption, int id) {
-  if (stat == NULL) {
-    return createstation(capacity, consumption, id);
-  } else if (consumption < stat->consumption){
-    stat->left = insert(stat->left, capacity, consumption, id);
+pTree insert(pTree root, long capacity, long consumption, int id) {
+  if (root == NULL) {
+    return createTree(createStation(capacity, consumption, id));
   }
-  else if(consumption > stat->consumption){
-    stat->right = insert(stat->right, capacity, consumption, id);
+
+  if (consumption < root->station->consumption) {
+    root->left = insert(root->left, capacity, consumption, id);
+  } else if (consumption > root->station->consumption) {
+    root->right = insert(root->right, capacity, consumption, id);
+  } else {
+    return root; // Duplicate consumption, do nothing
   }
-  else{
-    return stat;
-  }
-  return equilibrage(stat);
+
+  return equilibrage(root);
 }
