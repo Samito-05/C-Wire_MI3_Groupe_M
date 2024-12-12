@@ -105,7 +105,7 @@ pTree doubleRotationRight(pTree node) {
   return rotationRight(node);
 }
 
-pTree equilibrage(pTree node) {
+pTree balancing(pTree node) {
   change_balance(node);
 
   if (node->station->balance >= 2) {
@@ -140,5 +140,5 @@ pTree insert(pTree root, long capacity, long consumption, int id) {
     return root; // Duplicate consumption, do nothing
   }
 
-  return equilibrage(root);
+  return balancing(root);
 }
