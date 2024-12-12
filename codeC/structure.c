@@ -16,7 +16,7 @@ typedef Station* pStation;
 typedef AVLtree* pTree;
 */
 
-#include<"stucture.h">
+#include "structure.h"
 
 pStation createstation(long capacity_, long consumption_, int id_) {
   pStation stat = malloc(sizeof(Station)); 
