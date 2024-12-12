@@ -2,12 +2,12 @@
 
  Projet CY Tech 3eme Semestre : PROCOPPE; TRAN-PHAT; PELISSIER
 
-Semaine du 24/11 :
+Semaine du 25/11 :
     - Creation du dossier
     -
     -
 
-Semaine du 01/12 :
+Semaine du 02/12 :
     - Début shell
         - Fonction aide -
         - Verif paramètres
@@ -17,4 +17,8 @@ Semaine du 01/12 :
         - Fonctions de base
         - Structure
         - 
-    - Gestion du documents via Shell    
+    - Gestion du documents via Shell
+    
+Semaine du 09/12 :
+    - Gestion du fichier trié en c
+    -
