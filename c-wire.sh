@@ -79,6 +79,7 @@ fi
 
 
 # Define column indices based on the input
+column0=7
 if [[ "$station_type" == "hvb" ]]; then
     column1=2
 elif [[ "$station_type" == "hva" ]]; then
@@ -91,6 +92,9 @@ if [[ "$consumer_type" == "comp" ]]; then
     column2=5
 elif [[ "$consumer_type" == "indiv" ]]; then
     column2=6
+elif [[ "$consumer_type" == "all" ]]; then
+    column2=5 
+    column3=6
 fi
 
 
@@ -107,18 +111,33 @@ output=$(realpath tmp/data_sorted.csv)
 
 if [[  "$id" == "0" ]]; then
 
-    # Extract wanted lines
-    awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
-        'NR == 1 {print; next} # Print header
-        NR > 1 && $col1 && $col2 && $col1 != param && $col2 != param {print}' \
-        "$data" > "$output"
+    if [[ "$consumer_type" == "comp" || "$consumer_type" == "indiv" ]]; then
+        # Extract wanted lines
+        awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
+            'NR == 1 {print; next} # Print header
+            NR > 1 && $col1 && $col2 && $col1 != param && ($col2 != param) {print}' \
+            "$data" > "$output"
+    elif [[ "$consumer_type" == "all" ]]; then
+        awk -F';' -v col1="$column1" -v col2="$column2" -v col3="$column3" -v param="$parameter" \
+            'NR == 1 {print; next} # Print header
+            NR > 1 && $col1 && $col2 && $col3 && $col1 != param && ($col2 != param || $col3 != param) {print}' \
+            "$data" > "$output"
+    fi
 
 elif [[ "$id" -gt 0 ]]; then
 
-   awk -F';' -v col1="$column1" -v col2="$column2" -v col_id=1 -v param="$parameter" -v param2="$id" \
-    'NR == 1 {print; next} # Print header
-     NR > 1 && $col1 && $col2 && $col_id == param2 && $col1 != param && $col2 != param {print}' \
-    "$data" > "$output"
+    if [[ "$consumer_type" == "comp" || "$consumer_type" == "indiv" ]]; then
+        # Extract wanted lines
+        awk -F';' -v col1="$column1" -v col2="$column2" -v col_id=1 -v param="$parameter" -v param2="$id" \
+            'NR == 1 {print; next} # Print header
+            NR > 1 && $col1 && $col2 && $col_id == param2 && $col1 != param  && ($col2 != param) {print}' \
+            "$data" > "$output"
+    elif [[ "$consumer_type" == "all" ]]; then
+        awk -F';' -v col1="$column1" -v col2="$column2" -v col3="$column3" -v col_id=1 -v param="$parameter" -v param2="$id" \
+            'NR == 1 {print; next} # Print header
+            NR > 1 && $col1 && $col2 && $col3 && $col_id == param2 && $col1 != param && ($col2 != param || $col3 != param) {print}' \
+            "$data" > "$output"
+    fi
 fi
 
 end_time=$(date +%s.%N)
