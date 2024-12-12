@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 /*
 typedef struct Station {
   long capacity;
@@ -19,6 +16,7 @@ typedef Station* pStation;
 typedef AVLtree* pTree;
 */
 
+#include<"stucture.h">
 
 pStation createstation(long capacity_, long consumption_, int id_) {
   pStation stat = malloc(sizeof(Station)); 
