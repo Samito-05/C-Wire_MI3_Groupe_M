@@ -15,10 +15,10 @@ Semaine du 02/12 :
         - Dossiers tmp & graphs
     - Début C
         - Fonctions de base
-        - Structure
+        - Structures
         - 
     - Gestion du documents via Shell
     
 Semaine du 09/12 :
     - Gestion du fichier trié en c
-    -
+    - Fichier pour les structures et fonctions: AVL, equilibre, inserer... 
