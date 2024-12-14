@@ -78,65 +78,62 @@ if { [[ "$station_type" == "hvb" && "$consumer_type" == "indiv" ]] ||
 fi
 
 
-# Define column indices based on the input
-column0=7
-if [[ "$station_type" == "hvb" ]]; then
-    column1=2
-elif [[ "$station_type" == "hva" ]]; then
-    column1=3
-elif [[ "$station_type" == "lv" ]]; then
-    column1=4
-fi
+# Define columns
+column1=1   # id
+column2=2   # hvb
+column3=3   # hva
+column4=4   # lv
+column5=5   # comp
+column6=6   # indiv
+column7=7   # capacity
+column8=8   # load
 
-if [[ "$consumer_type" == "comp" ]]; then
-    column2=5
-elif [[ "$consumer_type" == "indiv" ]]; then
-    column2=6
-elif [[ "$consumer_type" == "all" ]]; then
-    column2=5 
-    column3=6
-fi
-
-
-# Parameter to exlude
-
+# Parameter to exclude
 parameter="-"
 
 # ID to include
-
 parameter2=$id
 
 # Output CSV file
 output=$(realpath tmp/data_sorted.csv)
 
-if [[  "$id" == "0" ]]; then
+# Function to handle awk logic
+process_data() {
+    local col_station="$1"
+    local col_consumer="$2"
+    local col_capacity="$3"
+    local col_station_ex1="$4"
 
-    if [[ "$consumer_type" == "comp" || "$consumer_type" == "indiv" ]]; then
-        # Extract wanted lines
-        awk -F';' -v col1="$column1" -v col2="$column2" -v param="$parameter" \
+    if [[ "$id" == "0" ]]; then
+        # No specific ID filter
+        awk -F';' -v col_station="$col_station" -v col_station_ex1="$col_station_ex1" -v col_consumer="$col_consumer" -v col_capacity="$col_capacity" -v param="$parameter" \
             'NR == 1 {print; next} # Print header
-            NR > 1 && $col1 && $col2 && $col1 != param && ($col2 != param) {print}' \
+            NR > 1 && $col_station && $col_consumer && ($col_station != param) && ((!col_consumer || $col_consumer != param) || $col_capacity != param) && (!col_station_ex1 || $col_station_ex1 == param) {print}' \
             "$data" > "$output"
-    elif [[ "$consumer_type" == "all" ]]; then
-        awk -F';' -v col1="$column1" -v col2="$column2" -v col3="$column3" -v param="$parameter" \
+    elif [[ "$id" -gt 0 ]]; then
+        # Specific ID filter
+        awk -F';' -v col1="$column1" -v col_station="$col_station" -v col_consumer="$col_consumer" -v param="$parameter" -v param2="$id" \
             'NR == 1 {print; next} # Print header
-            NR > 1 && $col1 && $col2 && $col3 && $col1 != param && ($col2 != param || $col3 != param) {print}' \
+            NR > 1 && $col1 == param2 && ($col_station != param) && ($col_consumer != param || $col_capacity != param) && ($col_station_ex1 == param) {print}' \
             "$data" > "$output"
     fi
-
-elif [[ "$id" -gt 0 ]]; then
-
-    if [[ "$consumer_type" == "comp" || "$consumer_type" == "indiv" ]]; then
-        # Extract wanted lines
-        awk -F';' -v col1="$column1" -v col2="$column2" -v col_id=1 -v param="$parameter" -v param2="$id" \
-            'NR == 1 {print; next} # Print header
-            NR > 1 && $col1 && $col2 && $col_id == param2 && $col1 != param  && ($col2 != param) {print}' \
-            "$data" > "$output"
+}
+# Main processing logic
+if [[ "$station_type" == "hvb" ]]; then
+    if [[ "$consumer_type" == "comp" ]]; then
+        process_data "$column2" "$column5" "$column7" "$column3"
+    fi
+elif [[ "$station_type" == "hva" ]]; then
+    if [[ "$consumer_type" == "comp" ]]; then
+        process_data "$column3" "$column5" "$column7" "$column4"
+    fi
+elif [[ "$station_type" == "lv" ]]; then
+    if [[ "$consumer_type" == "comp" ]]; then
+        process_data "$column4" "$column5" "$column7" "$column6"
+    elif [[ "$consumer_type" == "indiv" ]]; then
+        process_data "$column4" "$column6" "$column7" "$column5"
     elif [[ "$consumer_type" == "all" ]]; then
-        awk -F';' -v col1="$column1" -v col2="$column2" -v col3="$column3" -v col_id=1 -v param="$parameter" -v param2="$id" \
-            'NR == 1 {print; next} # Print header
-            NR > 1 && $col1 && $col2 && $col3 && $col_id == param2 && $col1 != param && ($col2 != param || $col3 != param) {print}' \
-            "$data" > "$output"
+        process_data "$column4" "" "$column7" ""
     fi
 fi
 
