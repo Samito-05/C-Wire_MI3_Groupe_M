@@ -1,5 +1,5 @@
-#IFNDEF STATION_H
-#DEFINE STATION_H
+#ifndef STATION_H
+#define STATION_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,4 +28,4 @@ pTree insert(pTree, pTree, int*);
 void infix(pTree);
 void freeTree(pTree);
 
-#ENDIF
+#endif

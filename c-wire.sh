@@ -11,12 +11,12 @@ start_time=$(date +%s.%N)
 function help {
     echo "==================================================================================="
     echo ""
-    echo "Data file location : Input/c-wire_v00.dat"
+    echo "Data file location : Input/<FILENAME>"
     echo "Station type possibilities : hvb, hva, lv"
     echo "Consumer type possibilities : comp, indiv, all (hvb all; hvb indiv; hva all; hva indiv forbidden)"
     echo "ID : Optional"
     echo "Help function : -h"
-    echo "Order of implementation : file_location station_type consumer_type ID(optional)"
+    echo "Order of implementation : file_location station_type consumer_type power_plant_ID(optional)"
     echo ""
     echo "==================================================================================="
     exit 0
@@ -25,6 +25,9 @@ if [[ "$1" == "-h" || $# -lt 3 ]]; then
     help
 fi
 
+if [[ "$1" == "-h" || "$2" == "-h" || "$3" == "-h" ]]; then
+    help
+fi
 
 # Default ID function
 function set_default_id {
@@ -71,14 +74,15 @@ if [[ "$consumer_type" != "comp" && "$consumer_type" != "indiv" && "$consumer_ty
 fi
 
 if { [[ "$station_type" == "hvb" && "$consumer_type" == "indiv" ]] || 
-     [[ "$station_type" == "hva" && "$consumer_type" == "all" ]] || 
-     [[ "$station_type" == "hva" && "$consumer_type" == "indiv" ]]; }; then
+     [[ "$station_type" == "hvb" && "$consumer_type" == "all" ]] || 
+     [[ "$station_type" == "hva" && "$consumer_type" == "indiv" ]] ||
+     [[ "$station_type" == "hva" && "$consumer_type" == "all" ]]; }; then
     echo "Error: Invalid consumer and station combination."
     help
 fi
 
 
-# Define columns
+
 column1=1   # id
 column2=2   # hvb
 column3=3   # hva
@@ -88,17 +92,18 @@ column6=6   # indiv
 column7=7   # capacity
 column8=8   # load
 
-# Parameter to exclude
+
 parameter="-"
 
-# ID to include
+
 parameter2=$id
 
-# Output CSV file
+
 output=$(realpath tmp/data_sorted.csv)
 
-# Function to handle awk logic
-process_data() {
+
+
+function process_data() {
     local col_station="$1"
     local col_consumer="$2"
     local col_capacity="$3"
@@ -118,7 +123,9 @@ process_data() {
             "$data" > "$output"
     fi
 }
-# Main processing logic
+
+
+
 if [[ "$station_type" == "hvb" ]]; then
     if [[ "$consumer_type" == "comp" ]]; then
         process_data "$column2" "$column5" "$column7" "$column3"
@@ -142,7 +149,8 @@ execution_time=$(awk "BEGIN {print $end_time - $start_time}")
 
 echo "The file has been sorted in ${execution_time} seconds"
 
-# Compilation of code
+
+
 EXE="./codeC/c-wire"
 
 if [[ ! -x "$EXE" ]]; then
