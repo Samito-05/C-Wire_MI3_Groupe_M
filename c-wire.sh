@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#To run program : ./c-wire.sh -h
+
 # tmp & graphs folder setup
 rm -rf tmp
 mkdir -p tmp
@@ -155,7 +157,7 @@ EXE="./codeC/c-wire"
 
 if [[ ! -x "$EXE" ]]; then
     echo "Compiling code..."
-    (cd ./codeC && make)
+    (cd ./codeC && make all)
     if [[ $? -ne 0 ]]; then
         echo "Error compiling C code"
         exit 1

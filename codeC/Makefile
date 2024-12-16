@@ -1,19 +1,19 @@
-All : prg 
+all : prg 
 
-prg: code.o station.o 
+prg: station.o code.o
 	@echo "Final compilation"
-	@gcc $(CFLAGS) code.o station.o -o prg
+	@gcc $(CFLAGS) station.o code.o -o prg
 
 code.o: main.c station.h
 	@echo "Compilation of the main code"
-	@gcc $(CFLAGS) -c main.c 
+	@gcc $(CFLAGS) -c main.c
 
-station.o: sation.c station.h
+station.o: station.c station.h
 	@echo "Compilation of the station code"
 	@gcc $(CFLAGS) -c station.c 
 
 
-vide:
+empty:
 	@echo "Deleting files"
 	@rm -f *.o
 	@rm prg
