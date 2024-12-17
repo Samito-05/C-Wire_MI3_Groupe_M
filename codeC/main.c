@@ -74,12 +74,10 @@ int main (int argc, char *argv[]){
         }
 
 
-        printf("%lli,%lli \n",new_node->capacity, new_node->consumption);
-        insert(tree, new_node, height);
-        free(new_node);
+        printf("%d,%lld,%lld \n",new_node->id,new_node->capacity, new_node->consumption);
+        
+            
     }
-
-    infix(tree);
 
     return 0;
 
