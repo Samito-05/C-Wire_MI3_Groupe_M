@@ -7,6 +7,18 @@ rm -rf tmp
 mkdir -p tmp
 mkdir -p graphs
 
+EXE="./codeC/c-wire"
+
+if [[ ! -x "$EXE" ]]; then
+    echo "Compiling code..."
+    (cd ./codeC && make all)
+    if [[ $? -ne 0 ]]; then
+        echo "Error compiling C code"
+        exit 1
+    fi
+    echo "Compilation sucessfull"
+fi
+
 start_time=$(date +%s.%N)
 
 # Help function
@@ -127,23 +139,34 @@ function process_data() {
 }
 
 
-
+#hvb comp
 if [[ "$station_type" == "hvb" ]]; then
     if [[ "$consumer_type" == "comp" ]]; then
         process_data "$column2" "$column5" "$column7" "$column3"
     fi
+#hva comp
 elif [[ "$station_type" == "hva" ]]; then
     if [[ "$consumer_type" == "comp" ]]; then
         process_data "$column3" "$column5" "$column7" "$column4"
     fi
+#lv
 elif [[ "$station_type" == "lv" ]]; then
+    #comp
     if [[ "$consumer_type" == "comp" ]]; then
         process_data "$column4" "$column5" "$column7" "$column6"
+    #indiv
     elif [[ "$consumer_type" == "indiv" ]]; then
         process_data "$column4" "$column6" "$column7" "$column5"
+    #all
     elif [[ "$consumer_type" == "all" ]]; then
         process_data "$column4" "" "$column7" ""
     fi
+fi
+
+"$EXE" "$station_type"
+if [[ $? -ne 0 ]]; then
+    echo "Error running the program."
+    exit 1
 fi
 
 end_time=$(date +%s.%N)
@@ -151,18 +174,6 @@ execution_time=$(awk "BEGIN {print $end_time - $start_time}")
 
 echo "The file has been sorted in ${execution_time} seconds"
 
+# rm -rf tmp
 
-
-EXE="./codeC/c-wire"
-
-if [[ ! -x "$EXE" ]]; then
-    echo "Compiling code..."
-    (cd ./codeC && make all)
-    if [[ $? -ne 0 ]]; then
-        echo "Error compiling C code"
-        exit 1
-    fi
-fi
-
-
-rm -rf tmp
+cd ./codeC && make empty

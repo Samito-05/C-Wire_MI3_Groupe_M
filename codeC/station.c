@@ -16,7 +16,7 @@ int min(int a, int b){
   }
 } 
 
-pTree createTree(long capacity_, long consumption_, int id_){
+pTree createTree(long long int capacity_, long long int consumption_, int id_){
   pTree treeNode = malloc(sizeof(AVLtree));
   if (treeNode == NULL) {
     exit(1);
@@ -139,7 +139,7 @@ void infix(pTree node){
   }
 
   infix(node->left);
-  printf("%d; %ld; %ld\n", node->id, node->consumption, node->consumption);
+  printf("%d; %ld; %ld\n", node->id, node->capacity, node->consumption);
   infix(node->right);
 }
 
