@@ -2,26 +2,32 @@
 
 int main (int argc, char *argv[]){
 
-    int power_plant_id, hvb, hva, lv, comp, indiv, *height;
+    int power_plant_id, hvb, hva, lv, comp, indiv, height;
     long long int capacity, load;
     pTree new_node = NULL, tree = NULL;
-    char* type = argv[1];
-
-    printf("***%s***\n", type);
+    char* station = argv[1];
+    char* consumer = argv[2];
+    char adress[50];
     
     FILE* file = fopen("tmp/data_sorted.csv", "r");
         if (file == NULL){
             printf("Error opening file\n");
             return 1;
         }
-    printf("File opened sucessfully\n");
+    //printf("File opened sucessfully\n");
+
+    sprintf(adress, "tests/%s_%s.csv", station, consumer);
+
+    FILE *file2 = fopen(adress, "w");
+
+    fprintf(file2,"%s Station : Capacity : Load\n",station);
 
     char line[1024];
 
     fgets(line, sizeof(line), file);
 
     while (fgets(line, sizeof(line), file)) {
-        // Tokenize and parse each line
+        
         char *token = strtok(line, ";");
         if (token == NULL) continue;
         power_plant_id = atoi(token);
@@ -54,15 +60,14 @@ int main (int argc, char *argv[]){
         if (token == NULL) continue;
         load = atoll(token);
 
-        // Create tree nodes based on type
-        if (strcmp(type, "hvb") == 0) {
+        if (strcmp(station, "hvb") == 0) {
             new_node = createTree(capacity, load, hvb);
-        } else if (strcmp(type, "hva") == 0) {
+        } else if (strcmp(station, "hva") == 0) {
             new_node = createTree(capacity, load, hva);
-        } else if (strcmp(type, "lv") == 0) {
+        } else if (strcmp(station, "lv") == 0) {
             new_node = createTree(capacity, load, lv);
         } else {
-            printf("Invalid type: %s\n", type);
+            printf("Invalid station: %s\n", station);
             fclose(file);
             return 1;
         }
@@ -73,11 +78,14 @@ int main (int argc, char *argv[]){
             return 1;
         }
 
-
-        printf("%d,%lld,%lld \n",new_node->id,new_node->capacity, new_node->consumption);
-        
-            
+        tree = insert(tree,new_node,&height);
+ 
     }
+
+    infix(tree, file2);
+
+    fclose(file);
+    fclose(file2);
 
     return 0;
 

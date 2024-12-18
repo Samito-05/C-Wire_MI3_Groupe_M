@@ -133,7 +133,7 @@ function process_data() {
         # Specific ID filter
         awk -F';' -v col1="$column1" -v col_station="$col_station" -v col_consumer="$col_consumer" -v param="$parameter" -v param2="$id" \
             'NR == 1 {print; next} # Print header
-            NR > 1 && $col1 == param2 && ($col_station != param) && ($col_consumer != param || $col_capacity != param) && ($col_station_ex1 == param) {print}' \
+            NR > 1 && $col_station && $col_consumer && $col1 == param2 && ($col_station != param) && ((!col_consumer || $col_consumer != param) || $col_capacity != param) && (!col_station_ex1 || $col_station_ex1 == param) {print}' \
             "$data" > "$output"
     fi
 }
@@ -163,7 +163,41 @@ elif [[ "$station_type" == "lv" ]]; then
     fi
 fi
 
-"$EXE" "$station_type"
+cat << "EOF"
+
+
+
+
+                                                                                                                                 
+        CCCCCCCCCCCCC                 WWWWWWWW                           WWWWWWWW  iiii                                          
+     CCC::::::::::::C                 W::::::W                           W::::::W i::::i                                         
+   CC:::::::::::::::C                 W::::::W                           W::::::W  iiii                                          
+  C:::::CCCCCCCC::::C                 W::::::W                           W::::::W                                                
+ C:::::C       CCCCCC                  W:::::W           WWWWW           W:::::W iiiiiii rrrrr   rrrrrrrrr       eeeeeeeeeeee    
+C:::::C                                 W:::::W         W:::::W         W:::::W  i:::::i r::::rrr:::::::::r    ee::::::::::::ee  
+C:::::C                                  W:::::W       W:::::::W       W:::::W    i::::i r:::::::::::::::::r  e::::::eeeee:::::ee
+C:::::C               ---------------     W:::::W     W:::::::::W     W:::::W     i::::i rr::::::rrrrr::::::re::::::e     e:::::e
+C:::::C               -:::::::::::::-      W:::::W   W:::::W:::::W   W:::::W      i::::i  r:::::r     r:::::re:::::::eeeee::::::e
+C:::::C               ---------------       W:::::W W:::::W W:::::W W:::::W       i::::i  r:::::r     rrrrrrre:::::::::::::::::e 
+C:::::C                                      W:::::W:::::W   W:::::W:::::W        i::::i  r:::::r            e::::::eeeeeeeeeee  
+ C:::::C       CCCCCC                         W:::::::::W     W:::::::::W         i::::i  r:::::r            e:::::::e           
+  C:::::CCCCCCCC::::C                          W:::::::W       W:::::::W         i::::::i r:::::r            e::::::::e          
+   CC:::::::::::::::C                           W:::::W         W:::::W          i::::::i r:::::r             e::::::::eeeeeeee  
+     CCC::::::::::::C                            W:::W           W:::W           i::::::i r:::::r              ee:::::::::::::e  
+        CCCCCCCCCCCCC                             WWW             WWW            iiiiiiii rrrrrrr                eeeeeeeeeeeeee  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                                                                    
+By PROCOPPE Sam, TRAN-PHAT Hugo and PELISSIER Jules
+
+
+
+
+
+
+
+EOF
+
+"$EXE" "$station_type" "$consumer_type"
 if [[ $? -ne 0 ]]; then
     echo "Error running the program."
     exit 1
@@ -174,6 +208,6 @@ execution_time=$(awk "BEGIN {print $end_time - $start_time}")
 
 echo "The file has been sorted in ${execution_time} seconds"
 
-# rm -rf tmp
+rm -rf tmp
 
 cd ./codeC && make empty

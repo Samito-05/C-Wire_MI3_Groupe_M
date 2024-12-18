@@ -93,39 +93,39 @@ pTree balanceAVL(pTree node) {
 }
 
 pTree insert(pTree node, pTree new, int* height) {
-  if(new == NULL){
-    exit(2);
-  }
+  
   if (node == NULL) {
     *height = 1;
     return new;
   }
-  else if(node->id == new->id){
+
+  
+  if (node->id == new->id) {
     node->capacity += new->capacity;
-    node->consumption = new->consumption;
-    
-    *height = 0;
+    node->consumption += new->consumption;
+    *height = 0;  
     return node;
   }
-  else if(new->id < node->id){
+
+  
+  if (new->id < node->id) {
     node->left = insert(node->left, new, height);
-    *height = -(*height);
+    *height = -(*height);  
   }
-  else if(new->id > node->id){
+  
+  else if (new->id > node->id) {
     node->right = insert(node->right, new, height);
-  } 
-  else{
-    *height = 0;
-    return node;
   }
 
-  if(*height != 0){
+  
+  if (*height != 0) {
     node->balance += *height; 
-    node = balanceAVL(node);
+    node = balanceAVL(node);  
 
-    if(node->balance == 0){
+    
+    if (node->balance == 0) {
       *height = 0;
-    } else{
+    } else {
       *height = 1;
     }
   }
@@ -133,15 +133,17 @@ pTree insert(pTree node, pTree new, int* height) {
   return node;
 }
 
-void infix(pTree node){
-  if(node == NULL){
-    return;
-  }
 
-  infix(node->left);
-  printf("%d; %ld; %ld\n", node->id, node->capacity, node->consumption);
-  infix(node->right);
+void infix(pTree node, FILE *file) {
+    if (node == NULL) {
+        return;
+    }
+
+    infix(node->left, file);
+    fprintf(file, "%d : %lld : %lld\n", node->id, node->capacity, node->consumption);
+    infix(node->right, file);
 }
+
 
 void freeTree(pTree node){
   if(node == NULL){

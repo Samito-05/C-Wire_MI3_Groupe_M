@@ -26,7 +26,7 @@ pTree doubleRotationLeft(pTree);
 pTree doubleRotationRight(pTree);
 pTree balanceAVL(pTree);
 pTree insert(pTree, pTree, int*);
-void infix(pTree);
+void infix(pTree, FILE*);
 void freeTree(pTree);
 
 #endif
