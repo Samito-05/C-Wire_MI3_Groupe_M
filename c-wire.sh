@@ -163,28 +163,69 @@ elif [[ "$station_type" == "lv" ]]; then
     fi
 fi
 
+
+generate_bargraph() {
+    local input_csv=$1
+    local output_png=$2
+
+    # Generate the gnuplot script
+    cat <<EOF > plot.gp
+        set terminal png size 12000,8000
+        set output '$output_png'
+        set datafile separator ":"
+        set title 'Energy Usage per Station'
+        set ylabel 'Energy (Kwh)'
+        set xlabel 'Station'
+        set style data histogram
+        set style histogram cluster gap 1
+        set style fill solid border -1
+        set boxwidth 0.9
+        set xtics rotate by -45 font ",75"
+        unset grid
+        set border lw 0
+        set key font ",75"
+        set bmargin 10
+
+        plot '$input_csv' using 2:xtic(1) title "Capacity" lc rgb "blue", \
+             '$input_csv' using 3 title "Load" lc rgb "red"
+EOF
+
+    # Run gnuplot
+    gnuplot plot.gp
+
+    # Clean up temporary file
+    rm plot.gp
+
+    echo "Bar graph generated as $output_png"
+    return 0
+}
+
+
+
+
+
 cat << "EOF"
 
 
 
 
                                                                                                                                  
-        CCCCCCCCCCCCC                 WWWWWWWW                           WWWWWWWW  iiii                                          
-     CCC::::::::::::C                 W::::::W                           W::::::W i::::i                                         
-   CC:::::::::::::::C                 W::::::W                           W::::::W  iiii                                          
+        CCCCCCCCCCCCC                 WWWWWWWW                           WWWWWWWW   iiii                                          
+     CCC::::::::::::C                 W::::::W                           W::::::W  i::::i                                         
+   CC:::::::::::::::C                 W::::::W                           W::::::W   iiii                                          
   C:::::CCCCCCCC::::C                 W::::::W                           W::::::W                                                
- C:::::C       CCCCCC                  W:::::W           WWWWW           W:::::W iiiiiii rrrrr   rrrrrrrrr       eeeeeeeeeeee    
-C:::::C                                 W:::::W         W:::::W         W:::::W  i:::::i r::::rrr:::::::::r    ee::::::::::::ee  
-C:::::C                                  W:::::W       W:::::::W       W:::::W    i::::i r:::::::::::::::::r  e::::::eeeee:::::ee
-C:::::C               ---------------     W:::::W     W:::::::::W     W:::::W     i::::i rr::::::rrrrr::::::re::::::e     e:::::e
-C:::::C               -:::::::::::::-      W:::::W   W:::::W:::::W   W:::::W      i::::i  r:::::r     r:::::re:::::::eeeee::::::e
-C:::::C               ---------------       W:::::W W:::::W W:::::W W:::::W       i::::i  r:::::r     rrrrrrre:::::::::::::::::e 
-C:::::C                                      W:::::W:::::W   W:::::W:::::W        i::::i  r:::::r            e::::::eeeeeeeeeee  
- C:::::C       CCCCCC                         W:::::::::W     W:::::::::W         i::::i  r:::::r            e:::::::e           
-  C:::::CCCCCCCC::::C                          W:::::::W       W:::::::W         i::::::i r:::::r            e::::::::e          
-   CC:::::::::::::::C                           W:::::W         W:::::W          i::::::i r:::::r             e::::::::eeeeeeee  
-     CCC::::::::::::C                            W:::W           W:::W           i::::::i r:::::r              ee:::::::::::::e  
-        CCCCCCCCCCCCC                             WWW             WWW            iiiiiiii rrrrrrr                eeeeeeeeeeeeee  
+ C:::::C       CCCCCC                  W:::::W           WWWWW           W:::::W  iiiiiii  rrrrr   rrrrrrrrr        eeeeeeeeeeee    
+C:::::C                                 W:::::W         W:::::W         W:::::W   i:::::i  r::::rrr:::::::::r     ee::::::::::::ee  
+C:::::C                                  W:::::W       W:::::::W       W:::::W     i::::i  r:::::::::::::::::r   e::::::eeeee:::::ee
+C:::::C               ---------------     W:::::W     W:::::::::W     W:::::W      i::::i  rr::::::rrrrr::::::r e::::::e     e:::::e
+C:::::C               -:::::::::::::-      W:::::W   W:::::W:::::W   W:::::W       i::::i   r:::::r     r:::::r e:::::::eeeee::::::e
+C:::::C               ---------------       W:::::W W:::::W W:::::W W:::::W        i::::i   r:::::r     rrrrrrr e:::::::::::::::::e 
+C:::::C                                      W:::::W:::::W   W:::::W:::::W         i::::i   r:::::r             e::::::eeeeeeeeeee  
+ C:::::C       CCCCCC                         W:::::::::W     W:::::::::W          i::::i   r:::::r             e:::::::e           
+  C:::::CCCCCCCC::::C                          W:::::::W       W:::::::W          i::::::i  r:::::r             e::::::::e          
+   CC:::::::::::::::C                           W:::::W         W:::::W           i::::::i  r:::::r              e::::::::eeeeeeee  
+     CCC::::::::::::C                            W:::W           W:::W            i::::::i  r:::::r               ee:::::::::::::e  
+        CCCCCCCCCCCCC                             WWW             WWW             iiiiiiii  rrrrrrr                 eeeeeeeeeeeeee  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                                                                                                     
 By PROCOPPE Sam, TRAN-PHAT Hugo and PELISSIER Jules
@@ -202,6 +243,11 @@ if [[ $? -ne 0 ]]; then
     echo "Error running the program."
     exit 1
 fi
+
+input_file="tests/${station_type}_${consumer_type}.csv"
+output_image="graphs/${station_type}_${consumer_type}.png"
+generate_bargraph "$input_file" "$output_image"
+
 
 end_time=$(date +%s.%N)
 execution_time=$(awk "BEGIN {print $end_time - $start_time}")
