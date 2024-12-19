@@ -7,6 +7,7 @@
 2. [Exécuter le Projet](#exécuter-le-projet)
 3. [Récupérer les Résultats](#récupérer-les-résultats)
 4. [Organisation du Projet](#organisation-du-projet)
+5. [Rapport du Projet](#Rapport-du-projet)
 
 ---
 
@@ -71,6 +72,11 @@ Voici l'organisation des dossiers et fichiers du projet :
   - `README.md` : Documentation du projet
   - `Projet_C-Wire_preIng2_2024_2025-v1.2.pdf` : Fichier pdf contenant des informations liées au projet
   - `Rapport.pdf` : Rapport du projet (pdf)
+
+---
+
+## Rapport du Projet
+
 
 ---
 
