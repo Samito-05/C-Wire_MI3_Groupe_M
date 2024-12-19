@@ -2,6 +2,41 @@
 
 #To run program : ./c-wire.sh -h
 
+cat << "EOF"
+
+
+#################################################################################################################################################
+
+                                                                                                                                 
+        CCCCCCCCCCCCC                  WWWWWWWW                           WWWWWWWW   iiii                                          
+     CCC::::::::::::C                  W::::::W                           W::::::W  i::::i                                         
+   CC:::::::::::::::C                  W::::::W                           W::::::W   iiii                                          
+  C:::::CCCCCCCC::::C                  W::::::W                           W::::::W                                                
+ C:::::C       CCCCCC                   W:::::W           WWWWW           W:::::W  iiiiiii  rrrrr   rrrrrrrrr        eeeeeeeeeeee    
+C:::::C                                  W:::::W         W:::::W         W:::::W   i:::::i  r::::rrr:::::::::r     ee::::::::::::ee  
+C:::::C                                   W:::::W       W:::::::W       W:::::W     i::::i  r:::::::::::::::::r   e::::::eeeee:::::ee
+C:::::C                ---------------     W:::::W     W:::::::::W     W:::::W      i::::i  rr::::::rrrrr::::::r e::::::e     e:::::e
+C:::::C                -:::::::::::::-      W:::::W   W:::::W:::::W   W:::::W       i::::i   r:::::r     r:::::r e:::::::eeeee::::::e
+C:::::C                ---------------       W:::::W W:::::W W:::::W W:::::W        i::::i   r:::::r     rrrrrrr e:::::::::::::::::e 
+C:::::C                                       W:::::W:::::W   W:::::W:::::W         i::::i   r:::::r             e::::::eeeeeeeeeee  
+ C:::::C       CCCCCC                          W:::::::::W     W:::::::::W          i::::i   r:::::r             e:::::::e           
+  C:::::CCCCCCCC::::C                           W:::::::W       W:::::::W          i::::::i  r:::::r             e::::::::e          
+   CC:::::::::::::::C                            W:::::W         W:::::W           i::::::i  r:::::r              e::::::::eeeeeeee  
+     CCC::::::::::::C                             W:::W           W:::W            i::::::i  r:::::r               ee:::::::::::::e  
+        CCCCCCCCCCCCC                              WWW             WWW             iiiiiiii  rrrrrrr                 eeeeeeeeeeeeee  
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                                                                                                                                                                    
+By PROCOPPE Sam, TRAN-PHAT Hugo and PELISSIER Jules
+
+#################################################################################################################################################
+
+
+
+
+
+EOF
+
+
 # tmp & graphs folder setup
 rm -rf tmp
 mkdir -p tmp
@@ -113,55 +148,85 @@ parameter="-"
 parameter2=$id
 
 
-output=$(realpath tmp/data_sorted.csv)
+output=$(realpath tmp/raw_data.csv)
 
 
 
-function process_data() {
+function process_to_raw_data() {
     local col_station="$1"
     local col_consumer="$2"
     local col_capacity="$3"
     local col_station_ex1="$4"
+    local col_load="$5"
 
     if [[ "$id" == "0" ]]; then
-        # No specific ID filter
-        awk -F';' -v col_station="$col_station" -v col_station_ex1="$col_station_ex1" -v col_consumer="$col_consumer" -v col_capacity="$col_capacity" -v param="$parameter" \
-            'NR == 1 {print; next} # Print header
-            NR > 1 && $col_station && $col_consumer && ($col_station != param) && ((!col_consumer || $col_consumer != param) || $col_capacity != param) && (!col_station_ex1 || $col_station_ex1 == param) {print}' \
-            "$data" > "$output"
+        
+        awk -F';' -v col_station="$col_station" -v col_station_ex1="$col_station_ex1" -v col_consumer="$col_consumer" -v col_capacity="$col_capacity" -v param="$parameter" -v col_load="$col_load" \
+            'NR > 1 && $col_station && $col_consumer && ($col_station != param) && ((!col_consumer || $col_consumer != param) || $col_capacity != param) && (!col_station_ex1 || $col_station_ex1 == param) {print $col_station ";" $col_capacity ";" $col_load}' \
+            "$data" | sort -t';' -k2,2nr | sed '/;0;/!b; $!{h;d}; x' > "$output"
+            
     elif [[ "$id" -gt 0 ]]; then
-        # Specific ID filter
-        awk -F';' -v col1="$column1" -v col_station="$col_station" -v col_consumer="$col_consumer" -v param="$parameter" -v param2="$id" \
-            'NR == 1 {print; next} # Print header
-            NR > 1 && $col_station && $col_consumer && $col1 == param2 && ($col_station != param) && ((!col_consumer || $col_consumer != param) || $col_capacity != param) && (!col_station_ex1 || $col_station_ex1 == param) {print}' \
-            "$data" > "$output"
+        
+        awk -F';' -v col1="$column1" -v col_station="$col_station" -v col_consumer="$col_consumer" -v col_capacity="$col_capacity" -v col_station_ex1="$col_station_ex1" -v param="$parameter" -v param2="$id" -v col_load="$col_load" \
+            'NR > 1 && $col_station && $col_consumer && $col1 == param2 && ($col_station != param) && ((!col_consumer || $col_consumer != param) || $col_capacity != param) && (!col_station_ex1 || $col_station_ex1 == param) {print $col_station ";" $col_capacity ";" $col_load}' \
+            "$data" | sort -t';' -k2,2nr | sed '/;0;/!b; $!{h;d}; x' > "$output"
     fi
 }
+
 
 
 #hvb comp
 if [[ "$station_type" == "hvb" ]]; then
     if [[ "$consumer_type" == "comp" ]]; then
-        process_data "$column2" "$column5" "$column7" "$column3"
+        process_to_raw_data "$column2" "$column5" "$column7" "$column3" "$column8"
     fi
 #hva comp
 elif [[ "$station_type" == "hva" ]]; then
     if [[ "$consumer_type" == "comp" ]]; then
-        process_data "$column3" "$column5" "$column7" "$column4"
+        process_to_raw_data "$column3" "$column5" "$column7" "$column4" "$column8"
     fi
 #lv
 elif [[ "$station_type" == "lv" ]]; then
     #comp
     if [[ "$consumer_type" == "comp" ]]; then
-        process_data "$column4" "$column5" "$column7" "$column6"
+        process_to_raw_data "$column4" "$column5" "$column7" "$column6" "$column8"
     #indiv
     elif [[ "$consumer_type" == "indiv" ]]; then
-        process_data "$column4" "$column6" "$column7" "$column5"
+        process_to_raw_data "$column4" "$column6" "$column7" "$column5" "$column8"
     #all
     elif [[ "$consumer_type" == "all" ]]; then
-        process_data "$column4" "" "$column7" ""
+        process_to_raw_data "$column4" "" "$column7" "" "$column8"
     fi
 fi
+
+if [[ "$id" == "0" ]]; then
+    sorted_file="tests/${station_type}_${consumer_type}.csv"
+elif [[ "$id" -gt 0 ]]; then
+    sorted_file="tests/${station_type}_${consumer_type}_${$id}.csv"
+fi
+
+function process_to_sorted_data() {
+    local station_type="$1"
+
+    # Write the header with the station type
+    echo "$station_type-Station: Capacity : Load" > $sorted_file
+    
+    # Sort the data and append it to the sorted file
+    sort -t';' -k2,2n tmp/unsorted_tree.csv >> $sorted_file
+}
+
+function process_to_sorted_data_min_max() {
+    local station_type="$1"
+
+    echo "$station_type-Station: Capacity : Load" > $sorted_file
+
+    {
+        sort -t';' -k2,2n tmp/unsorted_tree.csv | head -n 10
+        sort -t';' -k2,2n tmp/unsorted_tree.csv | tail -n 10
+    } | sort -t';' -k2,2n >> $sorted_file
+}
+
+
 
 
 generate_bargraph() {
@@ -172,7 +237,7 @@ generate_bargraph() {
     cat <<EOF > plot.gp
         set terminal png size 12000,8000
         set output '$output_png'
-        set datafile separator ":"
+        set datafile separator ";"
         set title 'Energy Usage per Station'
         set ylabel 'Energy (Kwh)'
         set xlabel 'Station'
@@ -180,14 +245,15 @@ generate_bargraph() {
         set style histogram cluster gap 1
         set style fill solid border -1
         set boxwidth 0.9
-        set xtics rotate by -45 font ",75"
+        set xtics rotate by -90 font ",25"
         unset grid
         set border lw 0
         set key font ",75"
         set bmargin 10
 
-        plot '$input_csv' using 2:xtic(1) title "Capacity" lc rgb "blue", \
-             '$input_csv' using 3 title "Load" lc rgb "red"
+        plot '$sorted_file' every ::1 using 2:xtic(1) title "Capacity" lc rgb "blue", \
+             '$sorted_file' every ::1 using 3 title "Load" lc rgb "red"
+
 EOF
 
     # Run gnuplot
@@ -201,52 +267,22 @@ EOF
 }
 
 
-
-
-
-cat << "EOF"
-
-
-
-
-                                                                                                                                 
-        CCCCCCCCCCCCC                 WWWWWWWW                           WWWWWWWW   iiii                                          
-     CCC::::::::::::C                 W::::::W                           W::::::W  i::::i                                         
-   CC:::::::::::::::C                 W::::::W                           W::::::W   iiii                                          
-  C:::::CCCCCCCC::::C                 W::::::W                           W::::::W                                                
- C:::::C       CCCCCC                  W:::::W           WWWWW           W:::::W  iiiiiii  rrrrr   rrrrrrrrr        eeeeeeeeeeee    
-C:::::C                                 W:::::W         W:::::W         W:::::W   i:::::i  r::::rrr:::::::::r     ee::::::::::::ee  
-C:::::C                                  W:::::W       W:::::::W       W:::::W     i::::i  r:::::::::::::::::r   e::::::eeeee:::::ee
-C:::::C               ---------------     W:::::W     W:::::::::W     W:::::W      i::::i  rr::::::rrrrr::::::r e::::::e     e:::::e
-C:::::C               -:::::::::::::-      W:::::W   W:::::W:::::W   W:::::W       i::::i   r:::::r     r:::::r e:::::::eeeee::::::e
-C:::::C               ---------------       W:::::W W:::::W W:::::W W:::::W        i::::i   r:::::r     rrrrrrr e:::::::::::::::::e 
-C:::::C                                      W:::::W:::::W   W:::::W:::::W         i::::i   r:::::r             e::::::eeeeeeeeeee  
- C:::::C       CCCCCC                         W:::::::::W     W:::::::::W          i::::i   r:::::r             e:::::::e           
-  C:::::CCCCCCCC::::C                          W:::::::W       W:::::::W          i::::::i  r:::::r             e::::::::e          
-   CC:::::::::::::::C                           W:::::W         W:::::W           i::::::i  r:::::r              e::::::::eeeeeeee  
-     CCC::::::::::::C                            W:::W           W:::W            i::::::i  r:::::r               ee:::::::::::::e  
-        CCCCCCCCCCCCC                             WWW             WWW             iiiiiiii  rrrrrrr                 eeeeeeeeeeeeee  
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                                                                                                                    
-By PROCOPPE Sam, TRAN-PHAT Hugo and PELISSIER Jules
-
-
-
-
-
-
-
-EOF
-
-"$EXE" "$station_type" "$consumer_type"
+"$EXE" "$station_type" "$consumer_type" "$id"
 if [[ $? -ne 0 ]]; then
     echo "Error running the program."
     exit 1
 fi
 
-input_file="tests/${station_type}_${consumer_type}.csv"
+
+if [[ "$station_type" == "lv" && "$consumer_type" == "all" ]]; then
+    process_to_sorted_data_min_max "$station_type"
+elif [[ "$consumer_type" != "all" && ("$station_type" == "hvb" || "$station_type" == "hva" || "$station_type" == "lv") ]]; then
+    process_to_sorted_data "$station_type"
+fi
+
+
 output_image="graphs/${station_type}_${consumer_type}.png"
-generate_bargraph "$input_file" "$output_image"
+generate_bargraph "$sorted_file" "$output_image"
 
 
 end_time=$(date +%s.%N)

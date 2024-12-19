@@ -133,15 +133,14 @@ pTree insert(pTree node, pTree new, int* height) {
   return node;
 }
 
-
-void infix(pTree node, FILE *file) {
+void traversal(pTree node, FILE *file) {
     if (node == NULL) {
         return;
     }
 
-    infix(node->left, file);
-    fprintf(file, "%d : %lld : %lld\n", node->id, node->capacity, node->consumption);
-    infix(node->right, file);
+    traversal(node->left, file);
+    fprintf(file, "%d;%lld;%lld\n", node->id, node->capacity, node->consumption);
+    traversal(node->right, file);
 }
 
 
