@@ -20,7 +20,7 @@ Ce projet analyse un fichier de données comportant différentes centrales élec
 
 ## Prérequis
 
-Avant d'exécuter le programme, il faut posséder ces outils : 
+Avant d'exécuter le programme, il faut posséder ces outils :  
   *GCC Compiler
   *Git
   *Makefile
