@@ -65,7 +65,7 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 - (Optionnel) ID possibles pour les centrales électriques : 1, 2, 3, 4, 5  
 ### Attention ! Combinaisons interdites : hvb all, hvb indiv, hva all, hva indiv
 
-*Si besoin d'aide :* 
+*Si besoin d'aide, exécuter la commande :* 
 ```bash
 ./c-wire.sh -h
 ```
