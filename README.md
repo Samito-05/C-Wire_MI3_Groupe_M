@@ -48,3 +48,35 @@ Ce projet analyse un fichier de données comportant différentes stations élect
         - Traitement des données triées par le Shell.
         - Création d’un fichier dans le dossier `tests`.
     - Génération de graphiques.
+    
+---
+
+## Exécuter le projet
+
+Pour exécuter ce projet, suivez les étapes ci-dessous :
+1. Dans le termnial Bash, utiliser la commande :
+```bash
+./c-wire.sh nom_du_fichier option
+```
+
+---
+
+## Organisation du projet
+
+Voici l'organisation des dossiers et fichiers du projet :
+
+- **codeC/** : Contient les fichiers source en langage C :
+  - `main.c` : Programme principal
+  - `station.c` : Fichier source pour la gestion des stations
+  - `station.h` : Fichier d'en-tête associé à `station.c`
+  - `Makefile` : Fichier pour automatiser la compilation du projet
+
+- **graphs/** : Dossier destiné aux graphiques générés par le programme
+
+- **Input/** : Dossier contenant les fichiers d'entrée ou données nécessaires à l'exécution
+
+- **Fichiers principaux :**
+  - `c-wire.sh` : Script Shell principal permettant d'automatiser les étapes (compilation, exécution, etc.)
+  - `README.md` : Documentation du projet
+  - `Projet_C-Wire_preIng2_2024_2025...` : Fichier pdf contenant des informations liées au projet
+
