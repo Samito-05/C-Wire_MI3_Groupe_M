@@ -53,9 +53,7 @@ Ce projet analyse un fichier de données comportant différentes stations élect
 
 Pour exécuter ce projet, suivez les étapes ci-dessous :
 1. Télécharger le dossier du code
-
 2. Dézipper le dossier
-
 3. Dans le termnial Bash, utiliser la commande :
 ```bash
 ./c-wire.sh nom_fichier type_station type_consommateur ID_power_plant(optionnel)
