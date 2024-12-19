@@ -1,19 +1,25 @@
 # C-Wire_MI3_Groupe_M
 
+
 ---
+
 
 ## Sommaire
 1. [Résumé du projet](#résumé-du-projet)
 2. [Exécuter le projet](#comment-exécuter-le-projet)
 3. [Organisation du projet](#organisation-du-projet)
 
+
 ---
+
 
 ## Résumé du projet
 
 Ce projet analyse un fichier de données comportant différentes stations électriques (HV-B, HV-A ou LV) ainsi que leurs consommations. Il permet de filtrer les données selon un type de station et un type de consommateur (entreprises ou individus), puis de trier les stations par ID à l'aide d'un AVL. Enfin, le programme calcule la somme des charges (Load) des entreprises ou individus pour chaque station et génère un fichier de sortie structuré avec les capacités totales et les consommations.
-    
+
+
 ---
+
 
 ## Exécuter le projet
 
@@ -35,7 +41,9 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 ./c-wire.sh -h
 ```
 
+
 ---
+
 
 ## Organisation du projet
 
@@ -61,7 +69,9 @@ Voici l'organisation des dossiers et fichiers du projet :
   - `Projet_C-Wire_preIng2_2024_2025-v1.2.pdf` : Fichier pdf contenant des informations liées au projet
   - `Rapport.pdf` : Rapport du projet (pdf)
 
+
 ---
+
 
 ## Auteurs 
 
