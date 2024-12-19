@@ -65,7 +65,7 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 
 Voici l'organisation des dossiers et fichiers du projet :
 
-- **codeC/** : Contient les fichiers source en langage C :
+- **codeC/** : Contient les fichiers source en langage C
   - `main.c` : Programme principal
   - `station.c` : Fichier source pour la gestion des stations
   - `station.h` : Fichier d'en-tête associé à `station.c`
