@@ -87,6 +87,8 @@ int main (int argc, char *argv[]){
     fclose(file);
     fclose(file2);
 
+    freeTree(tree);
+    
     return 0;
 
 }
