@@ -1,7 +1,5 @@
 # C-Wire_MI3_Groupe_M
 
-Projet CY Tech 3ème Semestre : **PROCOPPE, TRAN-PHAT, PELISSIER**
-
 ---
 
 ## Table des matières
@@ -95,3 +93,10 @@ Voici l'organisation des dossiers et fichiers du projet :
   - `README.md` : Documentation du projet
   - `Projet_C-Wire_preIng2_2024_2025-v1.2.pdf` : Fichier pdf contenant des informations liées au projet
 
+---
+
+## Auteurs 
+
+**PROCOPPE Sam**  
+**TRAN-PHAT Hugo**
+**PELISSIER JULES**
