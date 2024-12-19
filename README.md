@@ -4,8 +4,9 @@
 
 ## Sommaire
 1. [Résumé du projet](#résumé-du-projet)
-2. [Exécuter le projet](#comment-exécuter-le-projet)
-3. [Organisation du projet](#organisation-du-projet)
+2. [Exécuter le projet](#exécuter-le-projet)
+3. [Récupérer les résultats](#récupérer-les-résultats)
+4. [Organisation du projet](#organisation-du-projet)
 
 ---
 
@@ -34,6 +35,16 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 ```bash
 ./c-wire.sh -h
 ```
+
+---
+
+## Récupérer les résultats
+
+A la fin de l'exécution du code : 
+  - Dossier `tests/` pour récupérer les données
+  - Dossier `tmp/` pour récupérer les graphiques
+
+A la fin du programme, la durée totale d'exécution du code sera affiché par un compteur en secondes.
 
 ---
 
