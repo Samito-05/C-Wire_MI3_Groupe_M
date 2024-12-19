@@ -27,7 +27,7 @@ Ce projet analyse un fichier de données comportant différentes stations élect
     - Ajout des fichiers dans GitHub
 
 #### Semaine du 02/12 :
-      *Début shell :
+    - Début shell :
         - Ajout de la fonction d'aide
         - Vérification des paramètres
         - Compilation + vérification
