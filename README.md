@@ -44,8 +44,8 @@ Ce projet analyse un fichier de données comportant différentes stations élect
 #### Semaine du 16/12 :
     - Création du fichier main.c :
         - Traitement des données triées par le Shell.
-        - Création d’un fichier dans le dossier `tests`.
-    - Génération de graphiques.
+        - Création d’un fichier dans le dossier `tests`
+    - Génération de graphiques
     
 ---
 
