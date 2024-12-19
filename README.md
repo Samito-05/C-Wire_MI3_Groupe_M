@@ -26,11 +26,11 @@ Le programme inclut des fonctionnalités de tri, gestion des structures de donn�
 ## Avancement hebdomadaire
 
 ### Semaine du 25/11 :
-    - Creation du dossier
+    - Création du dossier
     - Ajout des fichiers dans GitHub
 
 ### Semaine du 02/12 :
-    - **Début shell :**
+    - #Début shell :#
         - Ajout de la fonction d'aide
         - Vérification des paramètres
         - Compilation + vérification
