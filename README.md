@@ -30,12 +30,12 @@ Le programme inclut des fonctionnalités de tri, gestion des structures de donn�
     - Ajout des fichiers dans GitHub
 
 ### Semaine du 02/12 :
-    - #Début shell :#
+    - Début shell :
         - Ajout de la fonction d'aide
         - Vérification des paramètres
         - Compilation + vérification
         - Création des dossiers 'tmp' & 'graphs'
-    - **Début C :**
+    - Début C :
         - Implémentation des fonctions de base
         - Création des structures
         - Gestion des documents via Shell
@@ -45,7 +45,7 @@ Le programme inclut des fonctionnalités de tri, gestion des structures de donn�
     - Création des fichiers pour la gestion d'un AVL (structures et fonctions)
 
 ### Semaine du 16/12 :
-    - **Création du fichier `main.c` :**
+    - Création du fichier `main.c` :
         - Traitement des données triées par le Shell.
         - Création d’un fichier dans le dossier `tests`.
     - Génération de graphiques.
