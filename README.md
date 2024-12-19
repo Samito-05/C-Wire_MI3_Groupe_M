@@ -82,13 +82,13 @@ Voici l'organisation des dossiers et fichiers du projet :
   - `station.h` : Fichier d'en-tête associé à `station.c`
   - `Makefile` : Fichier pour automatiser la compilation du projet
 
-- **graphs/** (créé après exécution) : Dossier destiné aux graphiques générés par le programme
-
 - **Input/** : Dossier contenant les fichiers d'entrée ou données nécessaires à l'exécution
 
 - **tests/** : Dossier contenant les fichiers de sorties créés par le C
 
 - **tmp/** (créé après exécution) : Dossier contenant les fichiers temporaires et triés par le Shell
+
+- **graphs/** (créé après exécution) : Dossier destiné aux graphiques générés par le programme
 
 - **Fichiers principaux :**
   - `c-wire.sh` : Script Shell principal permettant d'automatiser les étapes (compilation, exécution, etc)
