@@ -54,10 +54,15 @@ Ce projet analyse un fichier de données comportant différentes stations élect
 ## Exécuter le projet
 
 Pour exécuter ce projet, suivez les étapes ci-dessous :
-1. Dans le termnial Bash, utiliser la commande :
+1. Télécharger le code puis dézipper le dossier .zip
+2. Dans le termnial Bash, utiliser la commande :
 ```bash
-./c-wire.sh nom_du_fichier option
+./c-wire.sh nom_fichier type_station type_consommateur ID_power_plant(optionnel)
 ```
+# Type de stations possibles : hvb, hva, lv
+# Type de consommateurs possibles : comp, indiv, all
+# (Optionnel) ID possibles pour les centrales électriques : 1, 2, 3, 4, 5
+## Attention ! Combinaisons interdites : hvb all, hvb indiv, hva all, hva indiv
 
 ---
 
