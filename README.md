@@ -18,8 +18,7 @@ Projet CY Tech 3ème Semestre : **PROCOPPE, TRAN-PHAT, PELISSIER**
 
 ## Résumé du projet
 
-Ce projet vise à développer un outil en **C** et **Shell** capable de traiter et visualiser des données à partir de fichiers spécifiques.  
-Le programme inclut des fonctionnalités de tri, gestion des structures de données (comme AVL), et création de graphiques via des scripts.
+Ce projet analyse un fichier de données comportant différentes stations électriques (HV-B, HV-A ou LV) ainsi que leurs consommations. Il permet de filtrer les données selon un type de station et un type de consommateur (entreprises ou individus), puis de trier les stations par ID à l'aide d'un AVL. Enfin, le programme calcule la somme des charges (Load) des entreprises ou individus pour chaque station et génère un fichier de sortie structuré avec les capacités totales et les consommations.
 
 ---
 
