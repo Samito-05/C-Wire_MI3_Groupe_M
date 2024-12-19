@@ -42,7 +42,7 @@ Ce projet analyse un fichier de données comportant différentes stations élect
     - Création des fichiers pour la gestion d'un AVL (structures et fonctions)
 
 #### Semaine du 16/12 :
-    - Création du fichier `main.c` :
+    - Création du fichier main.c :
         - Traitement des données triées par le Shell.
         - Création d’un fichier dans le dossier `tests`.
     - Génération de graphiques.
