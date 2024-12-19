@@ -10,13 +10,13 @@
 
 ---
 
-## Résumé du projet
+## Résumé du Projet
 
 Ce projet analyse un fichier de données comportant différentes stations électriques (HV-B, HV-A ou LV) ainsi que leurs consommations. Il permet de filtrer les données selon un type de station et un type de consommateur (entreprises ou individus), puis de trier les stations par ID à l'aide d'un AVL. Enfin, le programme calcule la somme des charges (Load) des entreprises ou individus pour chaque station et génère un fichier de sortie structuré avec les capacités totales et les consommations.
 
 ---
 
-## Exécuter le projet
+## Exécuter le Projet
 
 Pour exécuter ce projet, suivez les étapes ci-dessous :
 1. Télécharger le dossier du code
@@ -38,7 +38,7 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 
 ---
 
-## Récupérer les résultats
+## Récupérer les Résultats
 
 A la fin de l'exécution du code : 
   - Dossier `tests/` pour récupérer les données
@@ -48,7 +48,7 @@ A la fin du programme, la durée totale d'exécution du code sera affiché par u
 
 ---
 
-## Organisation du projet
+## Organisation du Projet
 
 Voici l'organisation des dossiers et fichiers du projet :
 
