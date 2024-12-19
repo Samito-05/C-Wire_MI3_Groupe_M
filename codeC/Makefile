@@ -1,3 +1,5 @@
+CFLAGS = -Wno-implicit-function-declaration
+
 all : c-wire 
 
 code.o: ./main.c ./station.h

@@ -139,7 +139,7 @@ void traversal(pTree node, FILE *file) {
     }
 
     traversal(node->left, file);
-    fprintf(file, "%d;%lld;%lld\n", node->id, node->capacity, node->consumption);
+    fprintf(file, "%d:%lld:%lld\n", node->id, node->capacity, node->consumption);
     traversal(node->right, file);
 }
 

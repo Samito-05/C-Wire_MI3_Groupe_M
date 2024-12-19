@@ -1,9 +1,12 @@
 #!/bin/bash
 
-#To run program : ./c-wire.sh -h
+#Constants
+EXE="./codeC/c-wire"
 
-cat << "EOF"
+#!/bin/bash
 
+function display_header {
+    cat << EOF
 
 #################################################################################################################################################
 
@@ -26,37 +29,15 @@ C:::::C                                       W:::::W:::::W   W:::::W:::::W     
         CCCCCCCCCCCCC                              WWW             WWW             iiiiiiii  rrrrrrr                 eeeeeeeeeeeeee  
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                                                                                                                                                                     
+
 By PROCOPPE Sam, TRAN-PHAT Hugo and PELISSIER Jules
 
 #################################################################################################################################################
 
-
-
-
-
 EOF
+}
 
 
-# tmp & graphs folder setup
-rm -rf tmp
-mkdir -p tmp
-mkdir -p graphs
-
-EXE="./codeC/c-wire"
-
-if [[ ! -x "$EXE" ]]; then
-    echo "Compiling code..."
-    (cd ./codeC && make all)
-    if [[ $? -ne 0 ]]; then
-        echo "Error compiling C code"
-        exit 1
-    fi
-    echo "Compilation sucessfull"
-fi
-
-start_time=$(date +%s.%N)
-
-# Help function
 function help {
     echo "==================================================================================="
     echo ""
@@ -64,21 +45,15 @@ function help {
     echo "Station type possibilities : hvb, hva, lv"
     echo "Consumer type possibilities : comp, indiv, all (hvb all; hvb indiv; hva all; hva indiv forbidden)"
     echo "ID : Optional"
-    echo "Help function : -h"
+    echo "Help function : --h"
     echo "Order of implementation : file_location station_type consumer_type power_plant_ID(optional)"
+    echo "Example : ./c-wire.sh Input/c-wire_v00.dat hvb comp"
     echo ""
     echo "==================================================================================="
     exit 0
 }
-if [[ "$1" == "-h" || $# -lt 3 ]]; then
-    help
-fi
 
-if [[ "$1" == "-h" || "$2" == "-h" || "$3" == "-h" ]]; then
-    help
-fi
 
-# Default ID function
 function set_default_id {
     if [[ -z "$1" ]]; then
         echo "0"
@@ -88,13 +63,31 @@ function set_default_id {
 }
 
 
-# Validate ID function
+
 function validate_id {
     if [[ "$1" =~ ^[0-9]+$ ]]; then
         echo "$1"
     else
         echo "Error: ID must be a numeric value."
         exit 1
+    fi
+}
+
+
+function setup_environment {
+    rm -rf tmp
+    mkdir -p tmp
+    mkdir -p graphs
+}
+
+
+function compile_code {
+    if [[ ! -x "$EXE" ]]; then
+        (cd ./codeC && make all)
+        if [[ $? -ne 0 ]]; then
+            echo "Error compiling C code"
+            exit 1
+        fi
     fi
 }
 
@@ -106,50 +99,40 @@ id=$(set_default_id "$4")
 id=$(validate_id "$id")
 
 
-# Parameters check
-if [[ ! -f "$data" ]]; then
-    echo "Error: The file '$data' doesn't exist."
-    help
-fi
+function input_check {
+    if [[ ! -f "$data" ]]; then
+        echo "Error: The file '$data' doesn't exist."
+        help
+    fi
 
-if [[ "$station_type" != "hvb" && "$station_type" != "hva" && "$station_type" != "lv" ]]; then
-    echo "Error: Invalid station type. Valid options: hvb, hva, lv."
-    help
-fi
+    if [[ "$station_type" != "hvb" && "$station_type" != "hva" && "$station_type" != "lv" ]]; then
+        echo "Error: Invalid station type. Valid options: hvb, hva, lv."
+        help
+    fi
 
-if [[ "$consumer_type" != "comp" && "$consumer_type" != "indiv" && "$consumer_type" != "all" ]]; then
-    echo "Error: Invalid consumer type. Valid options: comp, indiv, all."
-    help
-fi
+    if [[ "$consumer_type" != "comp" && "$consumer_type" != "indiv" && "$consumer_type" != "all" ]]; then
+        echo "Error: Invalid consumer type. Valid options: comp, indiv, all."
+        help
+    fi
 
-if { [[ "$station_type" == "hvb" && "$consumer_type" == "indiv" ]] || 
-     [[ "$station_type" == "hvb" && "$consumer_type" == "all" ]] || 
-     [[ "$station_type" == "hva" && "$consumer_type" == "indiv" ]] ||
-     [[ "$station_type" == "hva" && "$consumer_type" == "all" ]]; }; then
-    echo "Error: Invalid consumer and station combination."
-    help
-fi
+    if { [[ "$station_type" == "hvb" && "$consumer_type" == "indiv" ]] || 
+        [[ "$station_type" == "hvb" && "$consumer_type" == "all" ]] || 
+        [[ "$station_type" == "hva" && "$consumer_type" == "indiv" ]] ||
+        [[ "$station_type" == "hva" && "$consumer_type" == "all" ]]; }; then
+        echo "Error: Invalid consumer and station combination."
+        help
+    fi
+}
 
+function execute_codeC {
 
+    "$EXE" "$station_type" "$consumer_type" "$id"
+    if [[ $? -ne 0 ]]; then
+        echo "Error running the program."
+       exit 1
+    fi
 
-column1=1   # id
-column2=2   # hvb
-column3=3   # hva
-column4=4   # lv
-column5=5   # comp
-column6=6   # indiv
-column7=7   # capacity
-column8=8   # load
-
-
-parameter="-"
-
-
-parameter2=$id
-
-
-output=$(realpath tmp/raw_data.csv)
-
+}
 
 
 function process_to_raw_data() {
@@ -174,43 +157,6 @@ function process_to_raw_data() {
 }
 
 
-
-#hvb comp
-if [[ "$station_type" == "hvb" ]]; then
-    if [[ "$consumer_type" == "comp" ]]; then
-        process_to_raw_data "$column2" "$column5" "$column7" "$column3" "$column8"
-    fi
-#hva comp
-elif [[ "$station_type" == "hva" ]]; then
-    if [[ "$consumer_type" == "comp" ]]; then
-        process_to_raw_data "$column3" "$column5" "$column7" "$column4" "$column8"
-    fi
-#lv
-elif [[ "$station_type" == "lv" ]]; then
-    #comp
-    if [[ "$consumer_type" == "comp" ]]; then
-        process_to_raw_data "$column4" "$column5" "$column7" "$column6" "$column8"
-    #indiv
-    elif [[ "$consumer_type" == "indiv" ]]; then
-        process_to_raw_data "$column4" "$column6" "$column7" "$column5" "$column8"
-    #all
-    elif [[ "$consumer_type" == "all" ]]; then
-        process_to_raw_data "$column4" "" "$column7" "" "$column8"
-    fi
-fi
-
-if [[ "$id" == "0" ]]; then
-    sorted_file="tests/${station_type}_${consumer_type}.csv"
-elif [[ "$id" -gt 0 ]]; then
-    sorted_file="tests/${station_type}_${consumer_type}_${id}.csv"
-fi
-
-if [[ "$id" == "0" ]]; then
-    output_image="graphs/${station_type}_${consumer_type}.png"
-elif [[ "$id" -gt 0 ]]; then
-    output_image="graphs/${station_type}_${consumer_type}_${id}.png"
-fi
-
 function process_to_sorted_data() {
     local station_type="$1"
 
@@ -218,7 +164,7 @@ function process_to_sorted_data() {
     echo "$station_type-Station: Capacity : Load" > $sorted_file
     
     # Sort the data and append it to the sorted file
-    sort -t';' -k2,2n tmp/unsorted_tree.csv >> $sorted_file
+    sort -t':' -k2,2n tmp/unsorted_tree.csv >> $sorted_file
 }
 
 function process_to_sorted_data_min_max() {
@@ -227,9 +173,9 @@ function process_to_sorted_data_min_max() {
     echo "$station_type-Station: Capacity : Load" > $sorted_file
 
     {
-        sort -t';' -k2,2n tmp/unsorted_tree.csv | head -n 10
-        sort -t';' -k2,2n tmp/unsorted_tree.csv | tail -n 10
-    } | sort -t';' -k2,2n >> $sorted_file
+        sort -t':' -k2,2n tmp/unsorted_tree.csv | head -n 10
+        sort -t':' -k2,2n tmp/unsorted_tree.csv | tail -n 10
+    } | sort -t':' -k2,2n >> $sorted_file
 }
 
 
@@ -247,7 +193,7 @@ generate_bargraph() {
     cat <<EOF > plot.gp
         set terminal png size 12000,8000
         set output '$output_png'
-        set datafile separator ";"
+        set datafile separator ":"
         set title 'Energy Usage per Station'
         set ylabel 'Energy (Kwh)'
         set xlabel 'Station'
@@ -266,39 +212,103 @@ generate_bargraph() {
 
 EOF
 
-    # Run gnuplot
     gnuplot plot.gp
 
-    # Clean up temporary file
     rm plot.gp
 
-    echo "Bar graph generated as $output_png"
     return 0
 }
 
 
-"$EXE" "$station_type" "$consumer_type" "$id"
-if [[ $? -ne 0 ]]; then
-    echo "Error running the program."
-    exit 1
+function main {
+
+    display_header
+    setup_environment
+    compile_code
+
+    start_time=$(date +%s.%N)
+
+    data=$(realpath "$1")
+    station_type=$2
+    consumer_type=$3
+    id=$(set_default_id "$4")
+    id=$(validate_id "$id")
+
+    input_check
+
+    column1=1   # id
+    column2=2   # hvb
+    column3=3   # hva
+    column4=4   # lv
+    column5=5   # comp
+    column6=6   # indiv
+    column7=7   # capacity
+    column8=8   # load
+    parameter="-"
+    parameter2=$id
+    output=$(realpath tmp/raw_data.csv)
+
+
+    # hvb comp
+    if [[ "$station_type" == "hvb" ]]; then
+        if [[ "$consumer_type" == "comp" ]]; then
+            process_to_raw_data "$column2" "$column5" "$column7" "$column3" "$column8"
+        fi
+    # hva comp
+    elif [[ "$station_type" == "hva" ]]; then
+        if [[ "$consumer_type" == "comp" ]]; then
+            process_to_raw_data "$column3" "$column5" "$column7" "$column4" "$column8"
+        fi
+    # lv
+    elif [[ "$station_type" == "lv" ]]; then
+        # comp
+        if [[ "$consumer_type" == "comp" ]]; then
+            process_to_raw_data "$column4" "$column5" "$column7" "$column6" "$column8"
+        # indiv
+        elif [[ "$consumer_type" == "indiv" ]]; then
+            process_to_raw_data "$column4" "$column6" "$column7" "$column5" "$column8"
+        # all
+        elif [[ "$consumer_type" == "all" ]]; then
+            process_to_raw_data "$column4" "" "$column7" "" "$column8"
+        fi
+    fi
+
+    execute_codeC
+
+    if [[ "$id" == "0" ]]; then
+        sorted_file="tests/${station_type}_${consumer_type}.csv"
+    elif [[ "$id" -gt 0 ]]; then
+        sorted_file="tests/${station_type}_${consumer_type}_${id}.csv"
+    fi
+
+    if [[ "$id" == "0" ]]; then
+        output_image="graphs/${station_type}_${consumer_type}.png"
+    elif [[ "$id" -gt 0 ]]; then
+        output_image="graphs/${station_type}_${consumer_type}_${id}.png"
+    fi
+
+    if [[ "$station_type" == "lv" ]]; then
+        process_to_sorted_data_min_max "$station_type"
+    elif [[ "$consumer_type" != "all" && ("$station_type" == "hvb" || "$station_type" == "hva") ]]; then
+        process_to_sorted_data "$station_type"
+    fi
+
+    generate_bargraph "$sorted_file" "$output_image"
+
+    end_time=$(date +%s.%N)
+    execution_time=$(awk "BEGIN {print $end_time - $start_time}")
+
+    echo "The file has been sorted in ${execution_time} seconds"
+
+    rm -rf tmp
+
+    cd ./codeC && make empty
+
+}
+
+
+if [[ "$1" == "--h" || "$2" == "--h" || "$3" == "--h" || "$4" == "--h" || "$5" == "--h" || $# -lt 3 ]]; then
+    help
+else
+    main "$@"
 fi
-
-
-if [[ "$station_type" == "lv" && "$consumer_type" == "all" ]]; then
-    process_to_sorted_data_min_max "$station_type"
-elif [[ "$consumer_type" != "all" && ("$station_type" == "hvb" || "$station_type" == "hva" || "$station_type" == "lv") ]]; then
-    process_to_sorted_data "$station_type"
-fi
-
-
-generate_bargraph "$sorted_file" "$output_image"
-
-
-end_time=$(date +%s.%N)
-execution_time=$(awk "BEGIN {print $end_time - $start_time}")
-
-echo "The file has been sorted in ${execution_time} seconds"
-
-rm -rf tmp
-
-cd ./codeC && make empty
