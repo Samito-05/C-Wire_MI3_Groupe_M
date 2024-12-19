@@ -4,16 +4,27 @@
 
 ## Sommaire
 1. [Résumé du Projet](#résumé-du-projet)
-2. [Exécuter le Projet](#exécuter-le-projet)
-3. [Récupérer les Résultats](#récupérer-les-résultats)
-4. [Organisation du Projet](#organisation-du-projet)
-5. [Rapport du Projet (pdf)](#Rapport-du-projet)
+2. [Prérequis](#Prérequis)
+3. [Exécuter le Projet](#exécuter-le-projet)
+4. [Récupérer les Résultats](#récupérer-les-résultats)
+5. [Organisation du Projet](#organisation-du-projet)
+6. [Rapport du Projet (pdf)](#Rapport-du-projet)
 
 ---
 
 ## Résumé du Projet
 
 Ce projet analyse un fichier de données comportant différentes centrales électriques et stations électriques (HV-B, HV-A ou LV) ainsi que leurs consommations. Il permet de filtrer les données selon un type de station et un type de consommateur (entreprises ou individus), puis de trier les stations par ID à l'aide d'un AVL. Enfin, le programme calcule la somme des charges (Load) des entreprises ou individus pour chaque station et génère un fichier de sortie trié par ordre croissant des capacités totales et les consommations.
+
+---
+
+## Prérequis
+
+Avant d'exécuter le programme, il faut posséder ces outils : 
+  *GCC Compiler
+  *Git
+  *Makefile
+  *Gnuplot
 
 ---
 
