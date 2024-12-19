@@ -202,7 +202,13 @@ fi
 if [[ "$id" == "0" ]]; then
     sorted_file="tests/${station_type}_${consumer_type}.csv"
 elif [[ "$id" -gt 0 ]]; then
-    sorted_file="tests/${station_type}_${consumer_type}_${$id}.csv"
+    sorted_file="tests/${station_type}_${consumer_type}_${id}.csv"
+fi
+
+if [[ "$id" == "0" ]]; then
+    output_image="graphs/${station_type}_${consumer_type}.png"
+elif [[ "$id" -gt 0 ]]; then
+    output_image="graphs/${station_type}_${consumer_type}_${id}.png"
 fi
 
 function process_to_sorted_data() {
@@ -233,7 +239,11 @@ generate_bargraph() {
     local input_csv=$1
     local output_png=$2
 
-    # Generate the gnuplot script
+    if [[ $(wc -l < "$input_csv") -le 1 ]]; then
+        echo "Input file '$input_csv' does not have enough data to generate a bar graph."
+        return 1
+    fi
+
     cat <<EOF > plot.gp
         set terminal png size 12000,8000
         set output '$output_png'
@@ -281,7 +291,6 @@ elif [[ "$consumer_type" != "all" && ("$station_type" == "hvb" || "$station_type
 fi
 
 
-output_image="graphs/${station_type}_${consumer_type}.png"
 generate_bargraph "$sorted_file" "$output_image"
 
 
