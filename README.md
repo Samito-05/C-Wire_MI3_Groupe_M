@@ -98,5 +98,5 @@ Voici l'organisation des dossiers et fichiers du projet :
 ## Auteurs 
 
 **PROCOPPE Sam**  
-**TRAN-PHAT Hugo**
+**TRAN-PHAT Hugo**  
 **PELISSIER JULES**
