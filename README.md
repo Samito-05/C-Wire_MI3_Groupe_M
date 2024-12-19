@@ -24,11 +24,11 @@ Ce projet analyse un fichier de données comportant différentes stations élect
 
 ## Avancement hebdomadaire
 
-### Semaine du 25/11 :
+#### Semaine du 25/11 :
     - Création du dossier
     - Ajout des fichiers dans GitHub
 
-### Semaine du 02/12 :
+#### Semaine du 02/12 :
     - Début shell :
         - Ajout de la fonction d'aide
         - Vérification des paramètres
@@ -39,7 +39,7 @@ Ce projet analyse un fichier de données comportant différentes stations élect
         - Création des structures
         - Gestion des documents via Shell
     
-### Semaine du 09/12 :
+#### Semaine du 09/12 :
     - Gestion du fichier trié en C
     - Création des fichiers pour la gestion d'un AVL (structures et fonctions)
 
