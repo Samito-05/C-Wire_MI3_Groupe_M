@@ -3,10 +3,10 @@
 ---
 
 ## Sommaire
-1. [Résumé du projet](#résumé-du-projet)
-2. [Exécuter le projet](#exécuter-le-projet)
-3. [Récupérer les résultats](#récupérer-les-résultats)
-4. [Organisation du projet](#organisation-du-projet)
+1. [Résumé du Projet](#résumé-du-projet)
+2. [Exécuter le Projet](#exécuter-le-projet)
+3. [Récupérer les Résultats](#récupérer-les-résultats)
+4. [Organisation du Projet](#organisation-du-projet)
 
 ---
 
