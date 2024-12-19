@@ -20,11 +20,11 @@ Ce projet analyse un fichier de données comportant différentes centrales élec
 
 ## Prérequis
 
-Avant d'exécuter le programme, il faut posséder ces outils :  
-- GCC Compiler  
-- Git  
-- Makefile  
-- Gnuplot  
+Avant d'exécuter le programme, assurez-vous que votre machine possède les outils suivants :  
+- GCC Compiler : compilateur pour le C afin de convertir le code source en un exécutable
+- Git (sous Windows) : interface permettant d'exécuter des commandes Git et des scripts Bash sous Windows
+- Makefile : automatiser la compilation et la gestion des dépendances
+- Gnuplot : traçage graphique utilisé pour générer des visualisations basées sur les données de sortie du programme
 
 ---
 
