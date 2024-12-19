@@ -60,7 +60,9 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 ./c-wire.sh nom_fichier type_station type_consommateur ID_power_plant(optionnel)
 ```
 **Type de stations possibles : hvb, hva, lv**
+
 **Type de consommateurs possibles : comp, indiv, all**
+
 *(Optionnel) ID possibles pour les centrales électriques : 1, 2, 3, 4, 5*
 ### Attention ! Combinaisons interdites : hvb all, hvb indiv, hva all, hva indiv
 
