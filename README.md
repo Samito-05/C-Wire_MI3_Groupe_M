@@ -2,7 +2,7 @@
 
 ---
 
-## Table des matières
+## Sommaire
 1. [Résumé du projet](#résumé-du-projet)
 2. [Avancement hebdomadaire](#avancement-hebdomadaire)
     - [Semaine du 25/11](#semaine-du-2511)
