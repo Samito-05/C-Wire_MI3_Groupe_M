@@ -80,7 +80,7 @@ Voici l'organisation des dossiers et fichiers du projet :
 - **tmp/** (créé après exécution) : Dossier contenant les fichiers temporaires et triés par le Shell
 
 - **Fichiers principaux :**
-  - `c-wire.sh` : Script Shell principal permettant d'automatiser les étapes (compilation, exécution, etc.)
+  - `c-wire.sh` : Script Shell principal permettant d'automatiser les étapes (compilation, exécution, etc)
   - `README.md` : Documentation du projet
   - `Projet_C-Wire_preIng2_2024_2025-v1.2.pdf` : Fichier pdf contenant des informations liées au projet
 
