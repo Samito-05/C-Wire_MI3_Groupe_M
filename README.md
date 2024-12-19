@@ -78,5 +78,5 @@ Voici l'organisation des dossiers et fichiers du projet :
 - **Fichiers principaux :**
   - `c-wire.sh` : Script Shell principal permettant d'automatiser les étapes (compilation, exécution, etc.)
   - `README.md` : Documentation du projet
-  - `Projet_C-Wire_preIng2_2024_2025...` : Fichier pdf contenant des informations liées au projet
+  - `Projet_C-Wire_preIng2_2024_2025-v1.2.pdf` : Fichier pdf contenant des informations liées au projet
 
