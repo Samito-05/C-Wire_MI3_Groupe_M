@@ -75,7 +75,7 @@ Voici l'organisation des dossiers et fichiers du projet :
 
 - **Input/** : Dossier contenant les fichiers d'entrée ou données nécessaires à l'exécution
 
-- **tests/** : Dossier contenant les fichiers de sorties 
+- **tests/** : Dossier contenant les fichiers de sorties créés par le C
 
 - **tmp/** (créé après exécution) : Dossier contenant les fichiers temporaires et triés par le Shell
 
