@@ -11,7 +11,7 @@ Projet CY Tech 3ème Semestre : **PROCOPPE, TRAN-PHAT, PELISSIER**
     - [Semaine du 02/12](#semaine-du-0212)
     - [Semaine du 09/12](#semaine-du-0912)
     - [Semaine du 16/12](#semaine-du-1612)
-3. [Comment exécuter le projet](#comment-exécuter-le-projet)
+3. [Exécuter le projet](#comment-exécuter-le-projet)
 4. [Organisation du projet](#organisation-du-projet)
 
 ---
