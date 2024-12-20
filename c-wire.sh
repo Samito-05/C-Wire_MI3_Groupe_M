@@ -5,6 +5,7 @@ EXE="./codeC/c-wire"
 
 #!/bin/bash
 
+# Function to display the script header with decorative ASCII art.
 function display_header {
     cat << EOF
 
@@ -37,7 +38,7 @@ By PROCOPPE Sam, TRAN-PHAT Hugo and PELISSIER Jules
 EOF
 }
 
-
+# Function to display usage instructions and script help.
 function help {
     echo "==================================================================================="
     echo ""
@@ -53,7 +54,7 @@ function help {
     exit 0
 }
 
-
+# Function to set a default ID if none is provided.
 function set_default_id {
     if [[ -z "$1" ]]; then
         echo "0"
@@ -63,7 +64,7 @@ function set_default_id {
 }
 
 
-
+# Function to validate that the ID is numeric.
 function validate_id {
     if [[ "$1" =~ ^[0-9]+$ ]]; then
         echo "$1"
@@ -73,14 +74,14 @@ function validate_id {
     fi
 }
 
-
+# Function to prepare the working environment by creating necessary directories.
 function setup_environment {
     rm -rf tmp
     mkdir -p tmp
     mkdir -p graphs
 }
 
-
+# Function to compile the C program if the executable is not already present.
 function compile_code {
     if [[ ! -x "$EXE" ]]; then
         (cd ./codeC && make all)
@@ -98,7 +99,7 @@ consumer_type=$3
 id=$(set_default_id "$4")
 id=$(validate_id "$id")
 
-
+# Function to validate input parameters.
 function input_check {
     if [[ ! -f "$data" ]]; then
         echo "Error: The file '$data' doesn't exist."
@@ -124,6 +125,7 @@ function input_check {
     fi
 }
 
+# Function to execute the C program with appropriate arguments.
 function execute_codeC {
 
     "$EXE" "$station_type" "$consumer_type" "$id"
@@ -219,7 +221,7 @@ EOF
     return 0
 }
 
-
+# Main function to orchestrate the script execution.
 function main {
 
     display_header
@@ -295,6 +297,7 @@ function main {
 
     generate_bargraph "$sorted_file" "$output_image"
 
+    # Calculate and display execution time.
     end_time=$(date +%s.%N)
     execution_time=$(awk "BEGIN {print $end_time - $start_time}")
 
@@ -306,7 +309,7 @@ function main {
 
 }
 
-
+# Display help if insufficient or incorrect arguments are provided.
 if [[ "$1" == "--h" || "$2" == "--h" || "$3" == "--h" || "$4" == "--h" || "$5" == "--h" || $# -lt 3 ]]; then
     help
 else
