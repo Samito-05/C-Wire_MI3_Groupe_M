@@ -1,11 +1,12 @@
 #include "station.h"
 
-int main (int argc, char *argv[]){  // Vérification que le programme reçoit suffisamment d'arguments (station, consommateur, identifiant).
-
+int main (int argc, char *argv[]){ 
+    
+     // Ensure the program receives at least 4 arguments (program name + 3 arguments).
      if (argc < 4) {
         return 1;
     }
-      // Déclaration des variables nécessaires au traitement
+    // Declare necessary variables.
     int station_num, height = 0;
     long long int capacity, load;
     pTree new_node = NULL, tree = NULL;
@@ -14,14 +15,14 @@ int main (int argc, char *argv[]){  // Vérification que le programme reçoit su
     char* id = argv[3];
     char adress[50];
 
-     // Ouverture du fichier source contenant les données brutes.
+    // Declare necessary variables.
     FILE* file = fopen("tmp/raw_data.csv", "r");
         if (file == NULL){
             printf("Error opening file\n");
             return 1;
         }
     
-     // Ouverture du fichier de sortie pour stocker l'arbre non trié.
+    // Declare necessary variables.
     FILE *file2 = fopen("tmp/unsorted_tree.csv", "w");
     if (file2 == NULL) {
         printf("Error opening output file: %s\n", adress);
@@ -31,7 +32,7 @@ int main (int argc, char *argv[]){  // Vérification que le programme reçoit su
 
     char line[1024];
      
-     // Lecture des données ligne par ligne depuis le fichier source.
+    // Read the data line by line from the input file.
     while (fgets(line, sizeof(line), file)) {
         
         char *token = strtok(line, ";");
@@ -46,7 +47,7 @@ int main (int argc, char *argv[]){  // Vérification que le programme reçoit su
         if (token == NULL) continue;
         load = atoll(token);
     
-         // Création d'un nouveau noeud pour l'arbre AVL avec les données extraites.
+        // Create a new tree node with the parsed data.
         new_node = createTree(capacity, load, station_num);
         
 
@@ -57,19 +58,19 @@ int main (int argc, char *argv[]){  // Vérification que le programme reçoit su
             return 1;
         }
 
-          // Insertion du noeud dans l'arbre AVL.
+        // Insert the new node into the AVL tree.
         tree = insert(tree,new_node,&height);
  
     }
 
- // Parcours de l'arbre et écriture des données dans le fichier de sortie.
+    // Traverse the AVL tree and write its content to the output file.
     traversal(tree,file2);
 
-     // Fermeture des fichiers après traitement.
+    // Close both input and output files after processing.
     fclose(file);
     fclose(file2);
 
-// Libération de la mémoire allouée pour l'arbre AVL
+    // Free the dynamically allocated memory for the AVL tree.
     freeTree(tree);
     
     return 0;
