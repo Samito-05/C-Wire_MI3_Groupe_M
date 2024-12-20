@@ -180,10 +180,16 @@ function process_to_sorted_data_min_max() {
     } | sort -t':' -k2,2n >> $sorted_file
 }
 
+function check_consumption() {
+    local input_csv=$1
+    local output_txt=$2
+
+    awk -F":" '$2 < $3 { print }' "$input_csv" > "$output_txt"
+}
+ 
 
 
-
-generate_bargraph() {
+ function generate_bargraph() {
     local input_csv=$1
     local output_png=$2
 
@@ -289,6 +295,12 @@ function main {
         output_image="graphs/${station_type}_${consumer_type}_${id}.png"
     fi
 
+    if [[ "$id" == "0" ]]; then
+        output_txt="tests/${station_type}_${consumer_type}_over_consumption.txt"
+    elif [[ "$id" -gt 0 ]]; then
+        output_txt="tests/${station_type}_${consumer_type}_${id}_over_consumption.txt"
+    fi
+
     if [[ "$station_type" == "lv" ]]; then
         process_to_sorted_data_min_max "$station_type"
     elif [[ "$consumer_type" != "all" && ("$station_type" == "hvb" || "$station_type" == "hva") ]]; then
@@ -296,6 +308,8 @@ function main {
     fi
 
     generate_bargraph "$sorted_file" "$output_image"
+
+    check_consumption "$sorted_file" "$output_txt"
 
     # Calculate and display execution time.
     end_time=$(date +%s.%N)
