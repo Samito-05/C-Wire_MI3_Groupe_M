@@ -88,7 +88,7 @@ Voici l'organisation des dossiers et fichiers du projet :
 
 ## Rapport du Projet
 
-[Rapport](Rapport.pdf)
+[Télécharger le rapport (pdf)](Rapport.pdf)
 
 ---
 
