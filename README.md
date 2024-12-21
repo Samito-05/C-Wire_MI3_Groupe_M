@@ -45,7 +45,7 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 
 *Si besoin d'aide, exécuter la commande :* 
 ```bash
-./c-wire.sh -h
+./c-wire.sh --h
 ```
 
 ---
