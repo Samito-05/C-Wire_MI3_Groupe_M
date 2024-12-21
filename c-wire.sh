@@ -40,6 +40,7 @@ EOF
 
 # Function to display usage instructions and script help.
 function help {
+    echo ""
     echo "==================================================================================="
     echo ""
     echo "Data file location : Input/<FILENAME>"
@@ -51,6 +52,7 @@ function help {
     echo "Example : ./c-wire.sh Input/c-wire_v00.dat hvb comp"
     echo ""
     echo "==================================================================================="
+    echo ""
     exit 0
 }
 
