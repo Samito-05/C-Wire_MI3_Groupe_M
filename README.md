@@ -55,7 +55,7 @@ Pour exécuter ce projet, suivez les étapes ci-dessous :
 A la fin de l'exécution du code : 
   - Dossier `tests/` pour récupérer nos anciennes compilations
   - Dossier `tmp/` pour récupérer les graphiques
-  - Dossier `output/` pour récupérer les résultats (Il faut les télécharger puisqu'ils s'effacent a chaque compilations)
+  - Dossier `output/` pour récupérer les résultats (Il faut les télécharger puisqu'ils s'effaçent à chaque compilation)
 
 A la fin du programme, la durée totale d'exécution du code sera affiché par un compteur en secondes.
 
