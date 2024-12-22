@@ -174,15 +174,22 @@ function process_to_sorted_data() {
 }
 
 function process_to_sorted_data_min_max() {
-    local station_type="$1"
+    local input_file=$1
+    local output_file=$2
 
-    echo "$station_type-Station: Capacity : Load" > $sorted_file
+    # Calculate available space (capacity - load), and add it as a new column
+    awk -F ':' '{
+        space_left = $2 - $3;
+        print $1, $2, $3, space_left;
+    }' OFS=',' "$input_file" | sort -t',' -k4,4n > tmp/sorted_stations.csv
 
+    # Get the 10 stations with the least and most space left
     {
-        sort -t':' -k2,2n tmp/unsorted_tree.csv | head -n 10
-        sort -t':' -k2,2n tmp/unsorted_tree.csv | tail -n 10
-    } | sort -t':' -k2,2n >> $sorted_file
+        head -n 10 tmp/sorted_stations.csv | awk -F ',' '{print $1 ":" $2 ":" $3}'
+        tail -n 10 tmp/sorted_stations.csv | awk -F ',' '{print $1 ":" $2 ":" $3}'
+    } > "$output_file"
 }
+
 
 function check_consumption() {
     local input_csv=$1
@@ -219,8 +226,8 @@ function check_consumption() {
         set key font ",75"
         set bmargin 10
 
-        plot '$sorted_file' every ::1 using 2:xtic(1) title "Capacity" lc rgb "blue", \
-             '$sorted_file' every ::1 using 3 title "Load" lc rgb "red"
+        plot '$input_csv' every ::1 using 2:xtic(1) title "Capacity" lc rgb "blue", \
+             '$input_csv' every ::1 using 3 title "Load" lc rgb "red"
 
 EOF
 
@@ -306,7 +313,7 @@ function main {
     fi
 
     if [[ "$station_type" == "lv" ]]; then
-        process_to_sorted_data_min_max "$station_type"
+        process_to_sorted_data_min_max "tmp/unsorted_tree.csv" "$sorted_file"
     elif [[ "$consumer_type" != "all" && ("$station_type" == "hvb" || "$station_type" == "hva") ]]; then
         process_to_sorted_data "$station_type"
     fi
