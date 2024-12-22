@@ -79,6 +79,8 @@ Voici l'organisation des dossiers et fichiers du projet :
 
 - **graphs/** (créé après exécution) : Dossier destiné aux graphiques générés par le programme
 
+- **output/** (créé après exécution) : Dossier avec le dernier résultat de compilation
+
 - **Fichiers principaux :**
   - `c-wire.sh` : Script Shell principal permettant d'automatiser les étapes (compilation, exécution, etc)
   - `README.md` : Documentation du projet
