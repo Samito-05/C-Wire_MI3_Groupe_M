@@ -79,7 +79,9 @@ function validate_id {
 # Function to prepare the working environment by creating necessary directories.
 function setup_environment {
     rm -rf tmp
+    rm -rf output
     mkdir -p tmp
+    mkdir -p output
     mkdir -p graphs
 }
 
@@ -286,9 +288,9 @@ function main {
     execute_codeC
 
     if [[ "$id" == "0" ]]; then
-        sorted_file="tests/${station_type}_${consumer_type}.csv"
+        sorted_file="output/${station_type}_${consumer_type}.csv"
     elif [[ "$id" -gt 0 ]]; then
-        sorted_file="tests/${station_type}_${consumer_type}_${id}.csv"
+        sorted_file="output/${station_type}_${consumer_type}_${id}.csv"
     fi
 
     if [[ "$id" == "0" ]]; then
@@ -298,9 +300,9 @@ function main {
     fi
 
     if [[ "$id" == "0" ]]; then
-        output_txt="tests/${station_type}_${consumer_type}_over_consumption.txt"
+        output_txt="output/${station_type}_${consumer_type}_over_consumption.txt"
     elif [[ "$id" -gt 0 ]]; then
-        output_txt="tests/${station_type}_${consumer_type}_${id}_over_consumption.txt"
+        output_txt="output/${station_type}_${consumer_type}_${id}_over_consumption.txt"
     fi
 
     if [[ "$station_type" == "lv" ]]; then
